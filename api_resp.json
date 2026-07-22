@@ -1,0 +1,175 @@
+{
+  "tournamentId": "69d0bd5f30d6022023a2320d",
+  "tournamentName": "Test Tournament-1",
+  "bracketType": "Single Elimination",
+  "rounds": [
+    {
+      "round": 1,
+      "series": "BO1",
+      "matches": [
+        {
+          "_id": "69ff0e1dbaa14a16a602bac0",
+          "matchNumber": 1,
+          "matchIndex": "1.1",
+          "nextMatchId": "69ff0e1dbaa14a16a602bac3",
+          "status": "completed",
+          "opponents": [
+            {
+              "competitor": {
+                "username": "Jacob",
+                "profileImage": null
+              },
+              "score": 13,
+              "result": "win"
+            },
+            {
+              "competitor": {
+                "username": "get_miked",
+                "profileImage": null
+              },
+              "score": 9,
+              "result": "loss"
+            }
+          ]
+        },
+        {
+          "_id": "69ff0e1dbaa14a16a602bac1",
+          "matchNumber": 2,
+          "matchIndex": "1.2",
+          "nextMatchId": "69ff0e1dbaa14a16a602bac4",
+          "status": "completed",
+          "opponents": [
+            {
+              "competitor": {
+                "username": "abinashnimzaaa",
+                "profileImage": null
+              },
+              "score": 5,
+              "result": "loss"
+            },
+            {
+              "competitor": {
+                "username": "abinashnimz",
+                "profileImage": null
+              },
+              "score": 13,
+              "result": "win"
+            }
+          ]
+        },
+        {
+          "_id": "69ff0e1dbaa14a16a602bac2",
+          "matchNumber": 3,
+          "matchIndex": "1.3",
+          "nextMatchId": "69ff0e1dbaa14a16a602bac4",
+          "status": "completed",
+          "opponents": [
+            {
+              "competitor": {
+                "username": "webstarOne",
+                "profileImage": null
+              },
+              "score": 0,
+              "result": "loss"
+            },
+            {
+              "competitor": {
+                "username": "MaveRickJazz",
+                "profileImage": null
+              },
+              "score": 13,
+              "result": "win"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "series": "BO1",
+      "matches": [
+        {
+          "_id": "69ff0e1dbaa14a16a602bac3",
+          "matchNumber": 4,
+          "matchIndex": "2.1",
+          "nextMatchId": "69ff0e1dbaa14a16a602bac5",
+          "status": "completed",
+          "opponents": [
+            {
+              "competitor": {
+                "username": "M7MDHERE",
+                "profileImage": null
+              },
+              "score": 13,
+              "result": "win"
+            },
+            {
+              "competitor": {
+                "username": "Jacob",
+                "profileImage": null
+              },
+              "score": 11,
+              "result": "loss"
+            }
+          ]
+        },
+        {
+          "_id": "69ff0e1dbaa14a16a602bac4",
+          "matchNumber": 5,
+          "matchIndex": "2.2",
+          "nextMatchId": "69ff0e1dbaa14a16a602bac5",
+          "status": "completed",
+          "opponents": [
+            {
+              "competitor": {
+                "username": "abinashnimz",
+                "profileImage": null
+              },
+              "score": 13,
+              "result": "win"
+            },
+            {
+              "competitor": {
+                "username": "MaveRickJazz",
+                "profileImage": null
+              },
+              "score": 6,
+              "result": "loss"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "series": "BO1",
+      "matches": [
+        {
+          "_id": "69ff0e1dbaa14a16a602bac5",
+          "matchNumber": 6,
+          "matchIndex": "3.1",
+          "nextMatchId": null,
+          "status": "completed",
+          "opponents": [
+            {
+              "competitor": {
+                "username": "M7MDHERE",
+                "profileImage": null
+              },
+              "score": 11,
+              "result": "loss"
+            },
+            {
+              "competitor": {
+                "username": "abinashnimz",
+                "profileImage": null
+              },
+              "score": 13,
+              "result": "win"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
