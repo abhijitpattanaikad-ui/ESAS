@@ -7,8 +7,8 @@ import TournamentDetailClient from "./TournamentDetailClient";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const result = await getTournamentDetail(id);
-  if (result.kind !== "success") return { title: "Tournament | XeSports" };
-  return { title: `${result.data.name} | XeSports`, description: result.data.shortDescription || `View ${result.data.name} tournament details.` };
+  if (result.kind !== "success") return { title: "Tournament | GoEzPz" };
+  return { title: `${result.data.name} | GoEzPz`, description: result.data.shortDescription || `View ${result.data.name} tournament details.` };
 }
 
 export default async function TournamentPage({ params }: { params: Promise<{ id: string }> }) {

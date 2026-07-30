@@ -3,7 +3,7 @@ import { tournamentService } from "@/app/(services)/tournamentService";
 
 export const metadata = {
   title: "Tournaments",
-  description: "Explore current and upcoming XeSports tournaments.",
+  description: "Explore current and upcoming GoEzPz tournaments.",
 };
 
 export default async function TournamentsPage() {

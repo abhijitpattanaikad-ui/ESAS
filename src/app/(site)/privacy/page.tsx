@@ -1,8 +1,8 @@
 import React from "react";
 
 export const metadata = {
-  title: "Privacy Policy | XeSports",
-  description: "Privacy Policy for XeSports Platform",
+  title: "Privacy Policy | GoEzPz",
+  description: "Privacy Policy for GoEzPz Platform",
 };
 
 export default function PrivacyPolicyPage() {
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-wide">1. Who We Are</h2>
             <p className="leading-relaxed">
-              This privacy policy applies to Virgin Gaming Fiesta powered by XeSports, operated by TechXhub DMCC and VSTAR MULTIMEDIA LLC (Virgin Megastore), registered in Dubai Multi Commodities Centre, United Arab Emirates. For privacy concerns, contact: <a href="mailto:support@xesports.pro" className="text-jaffa-500 hover:text-jaffa-400">support@xesports.pro</a>.
+              This privacy policy applies to Virgin Gaming Fiesta powered by GoEzPz, operated by TechXhub DMCC and VSTAR MULTIMEDIA LLC (Virgin Megastore), registered in Dubai Multi Commodities Centre, United Arab Emirates. For privacy concerns, contact: <a href="mailto:support@xesports.pro" className="text-jaffa-500 hover:text-jaffa-400">support@xesports.pro</a>.
             </p>
           </section>
 

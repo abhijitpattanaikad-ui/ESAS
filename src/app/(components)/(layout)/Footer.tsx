@@ -71,14 +71,15 @@ export default function Footer() {
           {/* Desktop Layout */}
           <div className="hidden sm:grid grid-cols-[3fr_1fr_1fr_1fr] gap-x-12">
             <div>
-              <Link href="/" aria-label="Home" className="block mb-5">
+              <Link href="/" aria-label="GoEzPz home" className="block mb-5">
                 <Image
-                  src="/images/exLogo.png"
-                  alt="ExSports Logo"
-                  width={110}
-                  height={108}
+                  src="/images/goezpz-logo.png"
+                  alt="GoEzPz"
+                  width={372}
+                  height={250}
                   priority
                   draggable={false}
+                  className="h-auto w-28 object-contain"
                 />
               </Link>
             </div>
@@ -109,13 +110,13 @@ export default function Footer() {
           {/* Mobile Layout */}
           <div className="sm:hidden flex flex-col items-start">
             <Image
-              src="/images/exLogo.png"
-              alt="ExSports Logo"
-              width={90}
-              height={90}
+              src="/images/goezpz-logo.png"
+              alt="GoEzPz"
+              width={372}
+              height={250}
               priority
               draggable={false}
-              className="mb-8"
+              className="mb-8 h-auto w-28 object-contain"
             />
 
             <div className="grid grid-cols-3 gap-y-6 gap-x-6 w-full">
@@ -155,7 +156,7 @@ export default function Footer() {
           gap-6 px-6 sm:px-10 lg:px-16 py-5 pb-20 md:pb-5
         ">
           <p className="text-[#CFCFCF] text-sm">
-            © {currentYear} - XeSports by Techxhub - All rights reserved.
+            © {currentYear} - GoEzPz by Techxhub - All rights reserved.
           </p>
 
           <div className="flex gap-6">
@@ -165,7 +166,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Visit XeSports on ${label}`}
+                aria-label={`Visit GoEzPz on ${label}`}
                 className="text-[#CFCFCF] hover:text-orange-500 transition-colors"
                 whileHover={{ scale: 1.15 }}
                 transition={{ duration: 0.2 }}

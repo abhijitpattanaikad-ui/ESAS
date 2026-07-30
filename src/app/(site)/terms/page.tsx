@@ -1,8 +1,8 @@
 import React from "react";
 
 export const metadata = {
-  title: "Terms & Conditions | XeSports",
-  description: "Terms and Conditions for XeSports Platform",
+  title: "Terms & Conditions | GoEzPz",
+  description: "Terms and Conditions for GoEzPz Platform",
 };
 
 export default function TermsConditionsPage() {
@@ -32,7 +32,7 @@ export default function TermsConditionsPage() {
           <section>
             <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-wide">Introduction</h2>
             <p className="leading-relaxed mb-4">
-              These Terms and Conditions (&quot;Terms&quot;) govern participation in the GamingFiesta esports tournament (&quot;Tournament&quot;) organized and operated by TechXhub DMCC (trading as &quot;XeSports&quot;), a company duly registered in Dubai Multi Commodities Centre, United Arab Emirates (&quot;Organizer&quot;), in collaboration with VSTAR MULTIMEDIA LLC (trading as &quot;Virgin Megastore&quot;) (&quot;Collaborating Partner&quot;).
+              These Terms and Conditions (&quot;Terms&quot;) govern participation in the GamingFiesta esports tournament (&quot;Tournament&quot;) organized and operated by TechXhub DMCC (trading as &quot;GoEzPz&quot;), a company duly registered in Dubai Multi Commodities Centre, United Arab Emirates (&quot;Organizer&quot;), in collaboration with VSTAR MULTIMEDIA LLC (trading as &quot;Virgin Megastore&quot;) (&quot;Collaborating Partner&quot;).
             </p>
             <p className="leading-relaxed">
               By registering for or participating in the Tournament, all participants (&quot;Participants&quot;) unconditionally agree to be bound by these Terms.
@@ -65,7 +65,7 @@ export default function TermsConditionsPage() {
             <ul className="list-disc pl-5 space-y-2 text-gray-400">
               <li><strong className="text-gray-300">3.1 Definitions.</strong> For purposes of this section, &quot;Personal Data&quot; means any information relating to an identified or identifiable Participant, including but not limited to name, contact information, identification documents, gameplay data, photographs, and video recordings.</li>
               <li><strong className="text-gray-300">3.2 Data Collection.</strong> By participating in the Tournament, Participants expressly consent to the collection and processing of their Personal Data by both the Organizer and the Collaborating Partner for purposes including but not limited to Tournament administration, prize distribution, marketing, promotional activities, and compliance with applicable laws.</li>
-              <li><strong className="text-gray-300">3.3 Data Sharing Between Parties.</strong> Participants acknowledge and consent that Personal Data collected during the Tournament will be shared between TechXhub DMCC (XeSports) and VSTAR MULTIMEDIA LLC (Virgin Megastore) for the purposes specified herein.</li>
+              <li><strong className="text-gray-300">3.3 Data Sharing Between Parties.</strong> Participants acknowledge and consent that Personal Data collected during the Tournament will be shared between TechXhub DMCC (GoEzPz) and VSTAR MULTIMEDIA LLC (Virgin Megastore) for the purposes specified herein.</li>
               <li><strong className="text-gray-300">3.4 Data Protection Compliance.</strong> Both the Organizer and Collaborating Partner undertake to process all Personal Data in accordance with UAE Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data and all applicable data protection regulations, including those specific to DMCC free zone.</li>
               <li><strong className="text-gray-300">3.5 Data Security.</strong> Reasonable technical and organizational measures shall be implemented to protect Personal Data against unauthorized access, disclosure, alteration, or destruction.</li>
               <li><strong className="text-gray-300">3.6 Third-Party Disclosure.</strong> Personal Data may be disclosed to third parties including sponsors, service providers, regulatory authorities, and law enforcement agencies where required for Tournament operations or by applicable law.</li>
@@ -144,7 +144,7 @@ export default function TermsConditionsPage() {
               <li><strong className="text-gray-300">11.3</strong> For inquiries or concerns regarding these Terms or the Tournament, Participants may contact:</li>
             </ul>
             <div className="pl-5 text-gray-300 bg-white/5 p-4 rounded-lg border border-white/10">
-              <p>TechXhub DMCC (XeSports)</p>
+              <p>TechXhub DMCC (GoEzPz)</p>
               <p>Dubai Multi Commodities Centre</p>
               <p>Dubai, United Arab Emirates</p>
               <p>Email: <a href="mailto:support@xesports.pro" className="text-jaffa-500 hover:text-jaffa-400">support@xesports.pro</a></p>

@@ -3,7 +3,7 @@ import { brandService } from "@/app/(services)/brandService";
 
 export const metadata = {
   title: "Our Partners",
-  description: "Partners and sponsors of the XeSports platform.",
+  description: "Partners and sponsors of the GoEzPz platform.",
 };
 
 export default async function PartnersPage() {
