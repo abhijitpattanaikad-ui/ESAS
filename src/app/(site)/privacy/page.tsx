@@ -1,7 +1,7 @@
 import React from "react";
 
 export const metadata = {
-  title: "Privacy Policy | GoEzPz",
+  title: "Privacy Policy",
   description: "Privacy Policy for GoEzPz Platform",
 };
 

@@ -8,7 +8,7 @@ import {Toaster} from "sonner";
 import Footer from "@/app/(components)/(layout)/Footer";
 
 export const metadata: Metadata = {
-  title: "GoEzPz — Login",
+  title: { absolute: "GoEzPz — Login" },
   description: "Login and Signup",
 };
 
