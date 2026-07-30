@@ -6,6 +6,7 @@ import { ChevronRight, LogOut, LayoutDashboard, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { userService } from "@/app/(services)/userService";
+import { clearAuthStorage } from "@/lib/auth/storage";
 
 export default function ModernProfileButton({ src: initialSrc }: { src?: string | null }) {
   const [open, setOpen] = useState(false);
@@ -81,7 +82,7 @@ export default function ModernProfileButton({ src: initialSrc }: { src?: string 
 
   const handleLogout = (ev?: React.MouseEvent) => {
     if (ev) ev.stopPropagation();
-    localStorage.clear();
+    clearAuthStorage(localStorage);
     window.dispatchEvent(new Event("storage"));
     router.push("/");
     setOpen(false);
@@ -197,4 +198,3 @@ function DropdownItem({
     </button>
   );
 }
-

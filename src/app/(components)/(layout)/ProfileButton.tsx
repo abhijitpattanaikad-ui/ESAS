@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { clearAuthStorage } from "@/lib/auth/storage";
 
 
 export default function ProfileButton({ src }: { src?: string | null }) {
@@ -69,7 +70,7 @@ export default function ProfileButton({ src }: { src?: string | null }) {
   
   const handleLogout = (ev?: React.MouseEvent) => {
     if (ev) ev.stopPropagation();
-    localStorage.clear();
+    clearAuthStorage(localStorage);
     window.dispatchEvent(new Event("storage"));
     router.push("/");
     setOpen(false);

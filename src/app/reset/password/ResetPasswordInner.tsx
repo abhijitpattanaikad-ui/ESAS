@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
 import { FloatingLabelInput } from "@/app/(components)/ui";
+import { getResetOutcome } from "@/lib/auth/resetFlow";
+import { API_BASE_URL } from "@/lib/api/config";
 
 export default function ResetPasswordInner() {
   const router = useRouter();
@@ -42,10 +44,8 @@ export default function ResetPasswordInner() {
     }
 
     setLoading(true);
-    // console.log("DEBUG sending token:", token); // -> verify token printed in console
-
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/reset/password`, {
+      const res = await fetch(`${API_BASE_URL}/v1/user/reset/password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,9 +55,6 @@ export default function ResetPasswordInner() {
         body: JSON.stringify({ data: { password } }),
       });
 
-      // debug: check network request and response
-      console.log("DEBUG status", res.status);
-
       let data: any = {};
       try {
         data = await res.json();
@@ -65,25 +62,19 @@ export default function ResetPasswordInner() {
         console.warn("Response was not valid JSON");
       }
 
-      if (res.ok) {
-        toast.success(data.message || "Password reset successfully");
-        // router.push("/login");
+      const outcome = getResetOutcome(res);
 
-        setTimeout(() => {
-          router.push("/login");
-        }, 900);
+      if (outcome.kind === "success") {
+        toast.success(data.message || "Password reset successfully");
+        setPassword("");
+        setConfirm("");
+        setTimeout(() => router.push(outcome.redirectTo), 900);
         return;
       }
 
-      setTimeout(() => {
-        router.push("/login");
-      }, 900);
-
-
-      if (res.status === 401) {
+      if (outcome.kind === "expired") {
         toast.error(data.message || "Reset link invalid or expired. Request a new link.");
         setToken(null);
-        setTimeout(() => router.push("/forgot-password"), 1200);
         return;
       }
 
@@ -98,10 +89,19 @@ export default function ResetPasswordInner() {
 
   if (!token) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <div className="animate-spin text-4xl mb-4">🔄</div>
-          <p>Redirecting to password reset...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#0f0f1a] p-4">
+        <div className="w-full max-w-md bg-[#1c1b29] text-white p-8 rounded-xl shadow-lg">
+          <h2 className="text-2xl font-semibold mb-3 text-center">Reset link required</h2>
+          <p className="text-sm text-gray-300 mb-6 text-center">
+            This password-reset link is missing a token or has expired. Request a new link to continue securely.
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push("/forgot-password")}
+            className="w-full rounded-md bg-[#ff4d6d] px-4 py-3 font-semibold text-black"
+          >
+            Request a new reset link
+          </button>
         </div>
       </div>
     );
@@ -112,25 +112,7 @@ export default function ResetPasswordInner() {
       <div className="w-full max-w-md bg-[#1c1b29] text-white p-8 rounded-xl shadow-lg">
         <h2 className="text-2xl font-semibold mb-4 text-center">Reset Password</h2>
 
-        {!token && (
-          <p className="text-sm text-gray-300 mb-4">
-            No token found in the URL. Paste the reset token here (from your email) or request a new link.
-          </p>
-        )}
-
         <form onSubmit={handleReset} className="space-y-4">
-          {/* manual token (shown when no token available) */}
-          {!token && (
-            <div className="mb-4">
-              <FloatingLabelInput
-                id="token"
-                label="Reset Token"
-                value={token ?? ""}
-                onChange={(e) => setToken(e.target.value || null)}
-              />
-            </div>
-          )}
-
           <div className="mb-4">
             <FloatingLabelInput
               id="password"

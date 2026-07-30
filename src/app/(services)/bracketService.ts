@@ -1,4 +1,5 @@
 // src/app/(services)/bracketService.ts
+import { API_BASE_URL } from "@/lib/api/config";
 
 export type BracketType = "SingleEliminationBracket" | "DoubleEliminationBracket" | "roundrobin";
 
@@ -1269,7 +1270,7 @@ export const bracketService = {
       // ── Real API call ──────────────────────────────────────────────────────
       // Replace the URL below with your actual bracket API endpoint.
       // The response is normalized by normalizeApiResponse() above.
-      const API_URL = `https://apis.xesports.pro/v1/bracket/${tournamentId}`;
+      const API_URL = `${API_BASE_URL}/v1/bracket/${tournamentId}`;
       const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
       const res = await fetch(API_URL, {
@@ -1282,9 +1283,7 @@ export const bracketService = {
 
       if (res.ok) {
         const raw = await res.json();
-        console.log("Bracket API Response:", raw);
         const normalized = normalizeApiResponse(raw, tournamentId);
-        console.log("Bracket API Normalized Response:", normalized);
         if (normalized) return normalized;
         // If normalizer returned null, fall through to mock data
       }

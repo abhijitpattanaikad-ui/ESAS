@@ -137,6 +137,29 @@ const RoundHeader = ({ title, series, width }: { title: string; series?: string 
 
 // ─── Main ──────────────────────────────────────────────────────────────────────
 export const SingleElimination = ({ matches }: { matches: BracketMatch[] }) => {
+  const scrollRef  = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startX     = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    isDragging.current = true;
+    startX.current = e.clientX;
+    scrollLeft.current = scrollRef.current?.scrollLeft ?? 0;
+    scrollRef.current?.setPointerCapture(e.pointerId);
+    if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
+  }, []);
+  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    scrollRef.current.scrollLeft = scrollLeft.current - (e.clientX - startX.current);
+  }, []);
+  const stopDrag = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    isDragging.current = false;
+    scrollRef.current?.releasePointerCapture(e.pointerId);
+    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
+  }, []);
+
   if (!matches || matches.length === 0) return null;
   const rounds = buildRounds(matches);
   if (rounds.length === 0) return null;
@@ -163,29 +186,6 @@ export const SingleElimination = ({ matches }: { matches: BracketMatch[] }) => {
       });
     });
   }
-
-  const scrollRef  = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX     = useRef(0);
-  const scrollLeft = useRef(0);
-
-  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return;
-    isDragging.current = true;
-    startX.current = e.clientX;
-    scrollLeft.current = scrollRef.current?.scrollLeft ?? 0;
-    scrollRef.current?.setPointerCapture(e.pointerId);
-    if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
-  }, []);
-  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    scrollRef.current.scrollLeft = scrollLeft.current - (e.clientX - startX.current);
-  }, []);
-  const stopDrag = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    isDragging.current = false;
-    scrollRef.current?.releasePointerCapture(e.pointerId);
-    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
-  }, []);
 
   const maxSlots = Math.pow(2, rounds.length - 1);
   const totalH = maxSlots * VERTICAL_UNIT + CARD_AREA_TOP + 40;

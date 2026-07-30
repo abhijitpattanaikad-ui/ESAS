@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { FloatingLabelInput } from "@/app/(components)/ui";
+import { API_BASE_URL } from "@/lib/api/config";
 
 export default function VerifyMailPage() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function VerifyMailPage() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/v1/user/verify/email`,
+        `${API_BASE_URL}/v1/user/verify/email`,
         {
           method: "GET",
           headers: {
@@ -62,8 +63,6 @@ export default function VerifyMailPage() {
       // safe parse (JSON or plain text)
       const parsed = await safeParseResponse(res);
       const { status: httpStatus, data } = parsed;
-
-      console.log("VERIFY response:", httpStatus, data);
 
       if (res.ok) {
         setStatus("success");

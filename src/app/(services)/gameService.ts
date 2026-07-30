@@ -1,4 +1,5 @@
 // src/app/(services)/gameService.ts
+import { API_BASE_URL } from "@/lib/api/config";
 
 export type ApiGameAssets = {
   thumbnail: string;
@@ -12,7 +13,7 @@ export type ApiGameResponse = {
   assets?: ApiGameAssets;
 };
 
-const API_URL = "https://apis.xesports.pro/v1/game/find-all";
+const API_URL = `${API_BASE_URL}/v1/game/find-all`;
 
 export const gameService = {
   /**

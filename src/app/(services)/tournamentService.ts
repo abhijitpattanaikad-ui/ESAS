@@ -1,8 +1,9 @@
 // src/app/(services)/tournamentService.ts
 import axios from "axios";
 import type { ApiTournament } from "@/app/(types)/event";
+import { API_BASE_URL } from "@/lib/api/config";
 
-const API_URL = "https://apis.xesports.pro/v1/tournament/find-all";
+const API_URL = `${API_BASE_URL}/v1/tournament/find-all`;
 
 export const tournamentService = {
   /**
@@ -26,7 +27,6 @@ export const tournamentService = {
       }
 
       const data: ApiTournament[] = await res.json();
-      console.log(data)
       return data.filter((t) => !t.isDraft).slice(0, 8);
 
     } catch (err) {
@@ -98,7 +98,7 @@ export const tournamentService = {
         userId: userId || ""
       };
 
-      const res = await axios.post(`https://apis.xesports.pro/v1/tournament/find/${id}`, {
+      const res = await axios.post(`${API_BASE_URL}/v1/tournament/find/${id}`, {
         criteria,
       }, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -142,7 +142,7 @@ export const tournamentService = {
       }
 
       // The frontend can POST directly to external API since POST allows body natively
-      const res = await axios.post(`https://apis.xesports.pro/v1/tournament/join`, {
+      const res = await axios.post(`${API_BASE_URL}/v1/tournament/join`, {
         criteria
       }, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -169,7 +169,7 @@ export const tournamentService = {
         token = localStorage.getItem("token") || "";
       }
 
-      const res = await axios.post(`https://apis.xesports.pro/v1/tournament/leave`, {
+      const res = await axios.post(`${API_BASE_URL}/v1/tournament/leave`, {
         criteria
       }, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { FloatingLabelInput } from "@/app/(components)/ui";
+import { API_BASE_URL } from "@/lib/api/config";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/sendpasswordresetmail`, {
+      const res = await fetch(`${API_BASE_URL}/v1/user/sendpasswordresetmail`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: { email } }),

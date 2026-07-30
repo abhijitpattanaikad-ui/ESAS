@@ -15,6 +15,8 @@ import dynamic from "next/dynamic";
 import { tournamentService } from "@/app/(services)/tournamentService";
 import type { ApiTournament } from "@/app/(types)/event";
 import { ExGlowButton, ExIconBrackets } from "@/app/(components)/ui";
+import { getSafeHttpsUrl } from "@/lib/security/safeUrl";
+import { SanitizedRichText } from "@/app/(components)/shared/SanitizedRichText";
 
 const DynamicBracketView = dynamic(() => Promise.resolve(BracketView), { ssr: false });
 
@@ -174,6 +176,7 @@ export default function TournamentPage() {
   
   const isJoinDisabled = isJoining || !isRegistrationOpen || hasJoined || tournament.status === "Completed" || tournament.buttonText === "Registration Ended";
   const isLeaveDisabled = isLeaving || tournament.status === "Completed";
+  const safeRulesLink = getSafeHttpsUrl(tournament.rulesLink);
 
   return (
     <div className="w-full bg-background min-h-screen text-white pb-20">
@@ -357,9 +360,9 @@ export default function TournamentPage() {
               </section>
               {tournament.description && (
                 <section className="bg-woodsmoke-900/40 border border-white/5 rounded-xl p-5 md:p-6 overflow-hidden">
-                  <div 
+                  <SanitizedRichText
                     className="tournament-html-content"
-                    dangerouslySetInnerHTML={{ __html: tournament.description }}
+                    html={tournament.description}
                   />
                 </section>
               )}
@@ -401,11 +404,11 @@ export default function TournamentPage() {
           {activeTab === "RULES" && (
             <section className="bg-woodsmoke-900/40 border border-white/5 rounded-xl p-5 md:p-6 overflow-hidden">
               {tournament.rules ? (
-                <div 
+                <SanitizedRichText
                   className="tournament-html-content"
-                  dangerouslySetInnerHTML={{ __html: tournament.rules }}
+                  html={tournament.rules}
                 />
-              ) : tournament.rulesLink ? (
+              ) : safeRulesLink ? (
                 <div className="flex flex-col items-center justify-center text-center p-4">
                   <h2 className="text-2xl font-bold heading-font mb-2 text-white/50">RULES</h2>
                   <p className="text-gray-400">Please refer to the official rules document below.</p>
@@ -416,10 +419,10 @@ export default function TournamentPage() {
                   <p className="text-gray-500">Information for rules will be available soon.</p>
                 </div>
               )}
-              {tournament.rulesLink && (
+              {safeRulesLink && (
                 <div className={`flex justify-center ${tournament.rules ? 'mt-8 pt-6 border-t border-white/10' : 'mt-4'}`}>
                   <a 
-                    href={tournament.rulesLink.startsWith('http') ? tournament.rulesLink : `https://${tournament.rulesLink}`}
+                    href={safeRulesLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-jaffa-500 hover:text-jaffa-400 font-bold transition-colors"

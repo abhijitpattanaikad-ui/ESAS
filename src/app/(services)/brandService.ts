@@ -1,4 +1,5 @@
 // src/app/(services)/brandService.ts
+import { API_BASE_URL } from "@/lib/api/config";
 
 export type ApiBrand = {
   _id: string;
@@ -7,7 +8,7 @@ export type ApiBrand = {
   isActive: boolean;
 };
 
-const API_URL = "https://apis.xesports.pro/v1/brand/find-all";
+const API_URL = `${API_BASE_URL}/v1/brand/find-all`;
 
 export const brandService = {
   /**

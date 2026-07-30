@@ -7,6 +7,7 @@ import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { ExButton, ExGlowButton, FloatingLabelInput, FloatingLabelPhoneInput } from "@/app/(components)/ui";
+import { API_BASE_URL } from "@/lib/api/config";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -90,7 +91,7 @@ export default function SignupPage() {
     setErrors({ email: "", username: "", phoneNumber: "", password: "", confirm: "", tc: "" });
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/signup`, {
+      const res = await fetch(`${API_BASE_URL}/v1/user/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

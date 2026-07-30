@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from "lucide-react";
 import { Toaster, toast } from 'sonner';
 import { ExButton, ExGlowButton, FloatingLabelInput } from "@/app/(components)/ui";
+import { API_BASE_URL } from "@/lib/api/config";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -55,7 +56,7 @@ export default function LoginPage() {
 
       // 🔥 Real API call path
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/v1/user/login`,
+        `${API_BASE_URL}/v1/user/login`,
         {
           method: 'POST',
           headers: {

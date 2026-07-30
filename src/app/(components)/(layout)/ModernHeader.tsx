@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { ExButton, ExGlowButton } from "@/app/(components)/ui";
 import clsx from "clsx";
 import ModernProfileButton from "./ModernProfileButton";
+import { clearAuthStorage } from "@/lib/auth/storage";
 
 interface ModernHeaderProps {
   onMenuToggle?: () => void;
@@ -115,7 +116,7 @@ function InlineUserMenu() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    clearAuthStorage(localStorage);
     window.dispatchEvent(new Event("storage"));
     router.push("/");
     setOpen(false);
