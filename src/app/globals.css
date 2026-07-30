@@ -1,0 +1,810 @@
+/* globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+:root {
+  /*--background: hsl(var(--color-woodsmoke-900));*/
+  --font-barlow-var: var(--font-barlow);
+  --font-exo-var: var(--font-exo);
+  --background: #101624;
+  --foreground: #ffffff;
+
+  --color-brand: var(--jaffa-500);
+
+  /* Typography Variables - Easy to swap later */
+  --font-primary-var: var(--font-exo-var);
+  --font-secondary: var(--font-barlow-var);
+  --font-heading-var: var(--font-secondary);
+  --font-body-var: var(--font-primary-var);
+  --font-accent-var: var(--font-primary-var);
+
+  /* Font Weights */
+  --weight-light: 300;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* Font Sizes (can be extended later) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  --jaffa-50: 12 83.33% 95.29%;
+  --jaffa-100: 14.12 83.61% 88.04%;
+  --jaffa-200: 15.96 87.2% 75.49%;
+  --jaffa-300: 22 86.54% 59.22%;
+  --jaffa-400: 22.32 68.91% 53.33%;
+  --jaffa-500: 22.24 61.37% 45.69%;
+  --jaffa-600: 21.68 62.3% 37.45%;
+  --jaffa-700: 22.11 65.52% 28.43%;
+  --jaffa-800: 21.74 69.7% 19.41%;
+  --jaffa-900: 21.33 81.82% 10.78%;
+  --jaffa-950: 18 88.24% 6.67%;
+
+
+  /* Crimson color palette */
+  --color-crimson-50: 356 80% 96%;
+  --color-crimson-100: 358 83% 91%;
+  --color-crimson-200: 358 84% 82%;
+  --color-crimson-300: 356 86% 74%;
+  --color-crimson-400: 355 89% 65%;
+  --color-crimson-500: 353 80% 53%;
+  --color-crimson-600: 353 71% 46%;
+  --color-crimson-700: 352 73% 35%;
+  --color-crimson-800: 353 78% 25%;
+  --color-crimson-900: 354 86% 14%;
+  --color-crimson-950: 356 91% 9%;
+
+  /* Woodsmoke color palette */
+  /*--color-woodsmoke-50: 0 3% 94%;
+  --color-woodsmoke-100: 0 4% 86%;
+  --color-woodsmoke-200: 0 4% 74%;
+  --color-woodsmoke-300: 0 5% 63%;
+  --color-woodsmoke-400: 0 5% 53%;
+  --color-woodsmoke-500: 0 5% 43%;
+  --color-woodsmoke-600: 0 5% 34%;
+  --color-woodsmoke-700: 0 6% 26%;
+  --color-woodsmoke-800: 0 7% 18%;
+  --color-woodsmoke-900: 0 7% 11%;
+  --color-woodsmoke-950: 0 8% 7%;*/
+
+  --color-woodsmoke-50: 220 36% 95%;
+  --color-woodsmoke-100: 226 37% 88%;
+  --color-woodsmoke-200: 225 37% 77%;
+  --color-woodsmoke-300: 224 38% 68%;
+  --color-woodsmoke-400: 222 39% 58%;
+  --color-woodsmoke-500: 222 28% 48%;
+  --color-woodsmoke-600: 222 29% 39%;
+  --color-woodsmoke-700: 221 30% 30%;
+  --color-woodsmoke-800: 222 31% 22%;
+  --color-woodsmoke-900: 223 34% 14%;
+  --color-woodsmoke-950: 222 38% 10%;
+
+  /* #1c1527 */
+  /*--mirage-50: hsl(264, 20%, 95.1%);
+  --mirage-100: hsl(261.43, 21.88%, 87.45%);
+  --mirage-200: hsl(260, 22.31%, 76.27%);
+  --mirage-300: hsl(261.54, 22.81%, 66.47%);
+  --mirage-400: hsl(263.27, 22.37%, 57.06%);
+  --mirage-500: hsl(263.57, 22.76%, 48.24%);
+  --mirage-600: hsl(263.48, 23.71%, 38.04%);
+  --mirage-700: hsl(263.33, 24.66%, 28.63%);
+  --mirage-800: hsl(264.44, 26.73%, 19.8%);
+  --mirage-900: hsl(263.33, 30%, 11.76%);
+  --mirage-950: hsl(264, 34.88%, 8.43%);*/
+
+  /* #101624 */
+  --mirage-50: hsl(220, 36%, 95.1%);
+  --mirage-100: hsl(226.36, 36.67%, 88.24%);
+  --mirage-200: hsl(224.65, 37.39%, 77.45%);
+  --mirage-300: hsl(223.81, 38.18%, 67.65%);
+  --mirage-400: hsl(221.71, 38.68%, 58.43%);
+  --mirage-500: hsl(222.35, 27.64%, 48.24%);
+  --mirage-600: hsl(222.11, 28.93%, 38.63%);
+  --mirage-700: hsl(221.33, 29.8%, 29.61%);
+  --mirage-800: hsl(222.35, 30.91%, 21.57%);
+  --mirage-900: hsl(222.5, 34.29%, 13.73%);
+  --mirage-950: hsl(222, 38.46%, 10.2%);
+
+  --hero-bg: url('/images/byClient/hero.jpg');
+  --landing-combined-bg: url('/images/byClient/bg_landing/option-3.jpg.jpeg');
+  --features-bg: url('/images/byClient/bg-secondary.jpg');
+  --features-gradient: linear-gradient(180deg,
+      rgba(20, 17, 17, 1) 0%,
+      rgba(20, 17, 17, 0.5) 25%,
+      rgba(20, 17, 17, 0.5) 75%,
+      rgba(20, 17, 17, 1) 100%);
+  --section-bg-advantages: url('/images/byClient/community.png');
+  /*--section-bg-footer: linear-gradient(to bottom, #120133 0%, #1B0502 100%);*/
+  --section-bg-footer: linear-gradient(180deg, #160637 0%, #12042A 100%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Font families using CSS variables */
+  --font-sans: var(--font-primary-var);
+  --font-heading: var(--font-heading-var);
+  --font-body: var(--font-body-var);
+
+  /* Register your custom colors */
+  --color-crimson-50: hsl(var(--color-crimson-50));
+  --color-crimson-100: hsl(var(--color-crimson-100));
+  --color-crimson-200: hsl(var(--color-crimson-200));
+  --color-crimson-300: hsl(var(--color-crimson-300));
+  --color-crimson-400: hsl(var(--color-crimson-400));
+  --color-crimson-500: hsl(var(--color-crimson-500));
+  --color-crimson-600: hsl(var(--color-crimson-600));
+  --color-crimson-700: hsl(var(--color-crimson-700));
+  --color-crimson-800: hsl(var(--color-crimson-800));
+  --color-crimson-900: hsl(var(--color-crimson-900));
+  --color-crimson-950: hsl(var(--color-crimson-950));
+
+  --color-jaffa-50: hsl(var(--jaffa-50));
+  --color-jaffa-100: hsl(var(--jaffa-100));
+  --color-jaffa-200: hsl(var(--jaffa-200));
+  --color-jaffa-300: hsl(var(--jaffa-300));
+  --color-jaffa-400: hsl(var(--jaffa-400));
+  --color-jaffa-500: hsl(var(--jaffa-500));
+  --color-jaffa-600: hsl(var(--jaffa-600));
+  --color-jaffa-700: hsl(var(--jaffa-700));
+  --color-jaffa-800: hsl(var(--jaffa-800));
+  --color-jaffa-900: hsl(var(--jaffa-900));
+  --color-jaffa-950: hsl(var(--jaffa-950));
+
+  --color-woodsmoke-50: hsl(var(--color-woodsmoke-50));
+  --color-woodsmoke-100: hsl(var(--color-woodsmoke-100));
+  --color-woodsmoke-200: hsl(var(--color-woodsmoke-200));
+  --color-woodsmoke-300: hsl(var(--color-woodsmoke-300));
+  --color-woodsmoke-400: hsl(var(--color-woodsmoke-400));
+  --color-woodsmoke-500: hsl(var(--color-woodsmoke-500));
+  --color-woodsmoke-600: hsl(var(--color-woodsmoke-600));
+  --color-woodsmoke-700: hsl(var(--color-woodsmoke-700));
+  --color-woodsmoke-800: hsl(var(--color-woodsmoke-800));
+  --color-woodsmoke-900: hsl(var(--color-woodsmoke-900));
+  --color-woodsmoke-950: hsl(var(--color-woodsmoke-950));
+
+  /*--color-woodsmoke-50: hsl(264, 20%, 95.1%);
+  --color-woodsmoke-100: hsl(261.43, 21.88%, 87.45%);
+  --color-woodsmoke-200: hsl(260, 22.31%, 76.27%);
+  --color-woodsmoke-300: hsl(261.54, 22.81%, 66.47%);
+  --color-woodsmoke-400: hsl(263.27, 22.37%, 57.06%);
+  --color-woodsmoke-500: hsl(263.57, 22.76%, 48.24%);
+  --color-woodsmoke-600: hsl(263.48, 23.71%, 38.04%);
+  --color-woodsmoke-700: hsl(263.33, 24.66%, 28.63%);
+  --color-woodsmoke-800: hsl(264.44, 26.73%, 19.8%);
+  --color-woodsmoke-900: hsl(263.33, 30%, 11.76%);
+  --color-woodsmoke-950: hsl(264, 34.88%, 8.43%);*/
+
+  /*--mirage-50: hsl(264, 20%, 95.1%);
+  --mirage-100: hsl(261.43, 21.88%, 87.45%);
+  --mirage-200: hsl(260, 22.31%, 76.27%);
+  --mirage-300: hsl(261.54, 22.81%, 66.47%);
+  --mirage-400: hsl(263.27, 22.37%, 57.06%);
+  --mirage-500: hsl(263.57, 22.76%, 48.24%);
+  --mirage-600: hsl(263.48, 23.71%, 38.04%);
+  --mirage-700: hsl(263.33, 24.66%, 28.63%);
+  --mirage-800: hsl(264.44, 26.73%, 19.8%);
+  --mirage-900: hsl(263.33, 30%, 11.76%);
+  --mirage-950: hsl(264, 34.88%, 8.43%);*/
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+/* html { overflow-x: hidden; } */
+/* body { overflow-x: hidden; } */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+  font-weight: var(--weight-normal);
+  line-height: 1.6;
+
+  /* background-image: radial-gradient(circle at 10% 20%, hsl(var(--color-crimson-500) / 0.02) 0, transparent 30%); */
+  background-image: radial-gradient(circle at 10% 20%, hsl(var(--color-jaffa-500) / 0.02) 0, transparent 30%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility focus ring — subtle crimson glow */
+:focus-visible {
+  /* outline: 2px solid hsl(var(--color-crimson-400)); */
+  outline: 2px solid hsl(var(--color-jaffa-400));
+  outline-offset: 2px;
+}
+
+/* Utility classes for easy font switching */
+.heading-font {
+  font-family: var(--font-heading), sans-serif;
+}
+
+.body-font {
+  font-family: var(--font-body), sans-serif;
+}
+
+.accent-font {
+  font-family: var(--font-accent-var), sans-serif;
+}
+
+/* Auth card / inputs (was in original globals.css) */
+.auth-card {
+  /* border: 1.6px solid hsl(var(--color-crimson-500) / 0.18); */
+  border: 1.6px solid hsl(var(--color-jaffa-500) / 0.18);
+  border-radius: 18px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 32px;
+  max-width: 460px;
+  width: 100%;
+
+  /* background uses a subtle translucent woodsmoke + overlay */
+  background: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-woodsmoke-900) 14%, transparent 0%) 0%,
+      color-mix(in srgb, var(--color-woodsmoke-900) 8%, transparent 100%) 100%);
+
+  box-shadow: 0 10px 30px rgba(7, 3, 8, 0.6);
+}
+
+/* Field label + inputs */
+.field-label {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--color-foreground) 68%, transparent 0%);
+  /* ~ rgba(255,255,255,0.68) */
+  display: block;
+  margin-bottom: 8px;
+}
+
+.input-es {
+  background: color-mix(in srgb, var(--color-woodsmoke-900) 12%, transparent 0%);
+  /* subtle dark translucent */
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 4%, transparent 0%);
+  /* subtle light border */
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: var(--color-foreground);
+}
+
+.input-es::placeholder {
+  color: color-mix(in srgb, var(--color-foreground) 35%, transparent 0%);
+  /* ~ rgba(255,255,255,0.35) */
+  font-size: 15px;
+}
+
+.input-es:focus {
+  /* box-shadow: 0 0 0 6px hsl(var(--color-crimson-500) / 0.06); */
+  box-shadow: 0 0 0 6px hsl(var(--color-jaffa-500) / 0.06);
+  /* border-color: hsl(var(--color-crimson-500) / 0.95); */
+  border-color: hsl(var(--color-jaffa-500) / 0.95);
+  outline: none;
+}
+
+/* Buttons */
+.btn-es {
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  /* background: linear-gradient(90deg, hsl(var(--color-crimson-500)), color-mix(in srgb, hsl(var(--color-crimson-400)) 80%, transparent 0%)); */
+  background: linear-gradient(90deg, hsl(var(--color-jaffa-500)), color-mix(in srgb, hsl(var(--color-jaffa-400)) 80%, transparent 0%));
+  color: var(--color-foreground);
+  border: none;
+  cursor: pointer;
+}
+
+.hero-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* gradient mapped to woodsmoke / transparent for the dark overlay */
+  background: linear-gradient(90deg,
+      rgba(14, 4, 12, 0.9) 0%,
+      rgba(14, 4, 12, 0.72) 10%,
+      rgba(14, 4, 12, 0.45) 25%,
+      rgba(14, 4, 12, 0.12) 40%,
+      transparent 60%);
+  pointer-events: none;
+}
+
+/* left-panel specifics */
+.left-panel {
+  padding-left: 64px;
+  padding-right: 48px;
+  padding-top: 36px;
+  padding-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-panel main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: calc(100vh - 120px);
+  /* padding-top: 36px; */
+}
+
+/* footer small logo */
+.left-footer {
+  position: absolute;
+  left: 28px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- Responsive behavior (copied/adapted from globals.css) ---------- */
+/* On screens smaller than 1024px: hide the hero and make left panel full width */
+@media (max-width: 1024px) {
+  .left-panel {
+    width: 100% !important;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .left-panel main {
+    height: auto;
+    padding-top: 28px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-card {
+    max-width: 520px;
+    margin: 0 auto;
+    /* center and allow slightly bigger */
+  }
+}
+
+/* small phones: center and tighten spacing */
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 22px;
+    border-radius: 14px;
+  }
+
+  .left-panel {
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 20px;
+  }
+
+  .left-panel main {
+    padding-top: 60px;
+  }
+
+  .field-label {
+    font-size: 12px;
+  }
+
+  .btn-es {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
+
+/* ---------- Small accessibility helpers (optional but useful) ---------- */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* Frame shape and border via CSS clip-path and pseudo-element */
+.shape-frame {
+  position: relative;
+  background: #141111;
+  /* dark inner fill */
+  clip-path: shape(from 20.54% 8.5%,
+      line to 79.46% 0.43%,
+      curve by 20.54% 6.3% with 11.39% -1.56%/20.54% 1.25%,
+      vline by 72.86%,
+      curve by -20.54% 11.92% with 0% 5.05%/-9.28% 10.36%,
+      line by -58.91% 8.07%,
+      curve by -20.54% -6.3% with -11.39% 1.56%/-20.54% -1.25%,
+      vline to 20.41%,
+      curve by 20.54% -11.92% with 0% -5.05%/9.28% -10.36%,
+      close);
+}
+
+/* Outer border layer */
+.border-layer {
+  background-color: #e72940;
+}
+
+/* Inner fill layer */
+.fill-layer {
+  background-color: #141111;
+}
+
+/* -----------------------------------------------------
+   MENU GEOMETRY (top small frame)
+----------------------------------------------------- */
+.shape-menu-geom {
+  clip-path: shape(from 20.54% 8.5%,
+      line to 79.46% 0.43%,
+      curve by 20.54% 6.3% with 11.39% -1.56%/20.54% 1.25%,
+      vline by 72.86%,
+      curve by -20.54% 11.92% with 0% 5.05%/-9.28% 10.36%,
+      line by -58.91% 8.07%,
+      curve by -20.54% -6.3% with -11.39% 1.56%/-20.54% -1.25%,
+      vline to 20.41%,
+      curve by 20.54% -11.92% with 0% -5.05%/9.28% -10.36%,
+      close);
+}
+
+/* -----------------------------------------------------
+   SIDENAV GEOMETRY (tall frame)
+----------------------------------------------------- */
+.shape-sidenav-geom {
+  clip-path: shape(from 20.54% 1.87%,
+      line to 79.46% 0.1%,
+      curve by 20.54% 1.39% with 11.39% -0.34%/20.54% 0.28%,
+      vline by 94.02%,
+      curve by -20.54% 2.63% with 0% 1.11%/-9.28% 2.28%,
+      line by -58.91% 1.78%,
+      curve by -20.54% -1.39% with -11.39% 0.34%/-20.54% -0.28%,
+      vline to 4.5%,
+      curve by 20.54% -2.63% with 0% -1.11%/9.28% -2.28%,
+      close);
+}
+
+/* -----------------------------------------------------
+   Border & Fill
+----------------------------------------------------- */
+.menu-border,
+.sidenav-border {
+  background-color: #e72940;
+  /* Border color */
+}
+
+.menu-fill,
+.sidenav-fill {
+  background-color: #141111;
+  /* Inner dark fill */
+}
+
+/* Border Pulse Animation */
+@keyframes frameBorderPulse {
+  0% {
+    filter: drop-shadow(0 0 0px #e72940);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 2px #e72940) drop-shadow(0 0 4px #e72940);
+  }
+
+  100% {
+    filter: drop-shadow(0 0 0px #e72940);
+  }
+}
+
+.frame-border-pulse {
+  animation: frameBorderPulse 3s ease-in-out infinite;
+}
+
+/* -------------------------------------------
+   Figma Menu Item Gloss Style (Premium Esports)
+------------------------------------------- */
+
+/* Base item gradient (idle state) */
+.sidenav-item {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.01) 55%,
+      rgba(0, 0, 0, 0.20) 100%);
+  padding: 8px 6px;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+/* Hover: glossy highlight + crimson glow */
+.sidenav-item:hover {
+  background: linear-gradient(180deg,
+      rgba(255, 63, 63, 0.18) 0%,
+      rgba(255, 63, 63, 0.06) 55%,
+      rgba(0, 0, 0, 0.20) 100%);
+  filter: drop-shadow(0px 0px 6px rgba(231, 41, 64, 0.7));
+  transform: translateY(-1px);
+}
+
+/* Disabled item (grayed-out glossy) */
+.sidenav-item-disabled {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.00) 100%);
+  opacity: 0.45;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+/* Active item (bright crimson glow and inner highlight) */
+.sidenav-item-active {
+  background: linear-gradient(180deg,
+      rgba(231, 41, 64, 0.35) 0%,
+      rgba(231, 41, 64, 0.18) 50%,
+      rgba(0, 0, 0, 0.25) 100%);
+  filter: drop-shadow(0px 0px 8px rgba(231, 41, 64, 0.9));
+  transform: translateY(-2px);
+}
+
+/* Tooltip glossy background */
+.sidenav-tooltip {
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.11) 0%,
+      rgba(255, 255, 255, 0.02) 60%,
+      rgba(0, 0, 0, 0.35) 100%);
+  backdrop-filter: blur(4px);
+}
+
+/* LEFT ACCENT BAR FOR ACTIVE ITEM */
+.sidenav-item-active::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg,
+      rgba(231, 41, 64, 1) 0%,
+      rgba(231, 41, 64, 0.5) 100%);
+  filter: drop-shadow(0 0 4px rgba(231, 41, 64, 0.9));
+}
+
+/* Brighten icon + label */
+.sidenav-item-active svg,
+.sidenav-item-active span {
+  filter: drop-shadow(0 0 4px rgba(231, 41, 64, 0.8));
+  color: hsl(var(--color-crimson-400));
+}
+
+/* ----- RED GLOW (focused card) ----- */
+.card-focus-glow:hover {
+  filter: drop-shadow(0 0 10px rgba(231, 41, 64, 0.9)) drop-shadow(0 0 20px rgba(231, 41, 64, 0.7));
+  opacity: 1;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* ----- DIM OTHER CARDS WHEN GROUP IS HOVERED ----- */
+.group:hover .card-dim {
+  opacity: 0.55;
+  /* darkens the non-focused cards */
+  filter: brightness(0.5);
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+
+/* ----- DON'T DIM the hovered card ----- */
+.group:hover .card-dim:hover {
+  opacity: 1;
+  filter: brightness(1);
+}
+
+/* VENDOR LAYOUT (NEEDED FOR PERFECT SEAMLESS LOOP) */
+.embla__container {
+  display: flex;
+  margin-left: calc(var(--slide-spacing) * -1);
+}
+
+.embla__slide {
+  flex: 0 0 var(--slide-size);
+  min-width: 0;
+  padding-left: var(--slide-spacing);
+  transform: translate3d(0, 0, 0);
+}
+
+/* GLOW ON HOVER (focused card) */
+.card-focus-glow:hover {
+  filter: drop-shadow(0 0 10px rgba(231, 41, 64, 0.9)) drop-shadow(0 0 20px rgba(231, 41, 64, 0.7));
+  opacity: 1;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* DIM NON-HOVERED CARDS WHEN GROUP IS HOVERED */
+.group:hover .card-dim {
+  opacity: 0.55;
+  filter: brightness(0.5);
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+
+/* DO NOT DIM THE HOVERED CARD */
+.group:hover .card-dim:hover {
+  opacity: 1;
+  filter: brightness(1);
+}
+
+@keyframes aura-rotate {
+  0% {
+    transform: rotate(0deg) scale(1.55);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1.55);
+  }
+}
+
+@theme {
+  --animate-aura-rotate: aura-rotate 10s linear infinite;
+}
+
+/* ==========================================================================
+   BUTTON: EX-GLOW-BUTTON (Rotating Border Effect)
+   TAG: #component-glow-button
+   ========================================================================== */
+
+@keyframes rotate-glow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.btn-glow-esports {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #ac5b2c;
+  border-radius: 12px;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+/* The Animated Rotating Background Square */
+.btn-glow-esports::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  /* Large enough to cover corners */
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(from 0deg,
+      #f97316,
+      #ffdb6f,
+      #f97316);
+  animation: rotate-glow 4s linear infinite;
+  z-index: -2;
+}
+
+/* The Solid Background Center Fill (Creates the border) */
+.btn-glow-esports::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  /* Border thickness */
+  background: #773410;
+  border-radius: 10px;
+  /* Slightly less than parent */
+  z-index: -1;
+}
+
+/* .btn-glow-esports:hover {
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.45), 0 0 50px rgba(249, 115, 22, 0.2);
+  filter: brightness(1.1);
+} */
+
+.btn-glow-esports:disabled {
+  background: #4a2814;
+  color: #9ca3af;
+  opacity: 0.7;
+}
+
+.btn-glow-esports:disabled::before {
+  animation: none;
+  background: #4a2814;
+}
+
+.btn-glow-esports:disabled::after {
+  background: #1a0e05;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* ==========================================================================
+   TOURNAMENT HTML CONTENT (description, rules rendered from API HTML)
+   ========================================================================== */
+.tournament-html-content {
+  font-size: 0.875rem;
+  color: #d1d5db;
+  /* gray-300 */
+  line-height: 1.75;
+}
+
+.tournament-html-content h1,
+.tournament-html-content h2,
+.tournament-html-content h3 {
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tournament-html-content h1:first-child,
+.tournament-html-content h2:first-child,
+.tournament-html-content h3:first-child {
+  margin-top: 0;
+}
+
+.tournament-html-content h1 {
+  font-size: 1.25rem;
+}
+
+.tournament-html-content h2 {
+  font-size: 1.125rem;
+}
+
+.tournament-html-content h3 {
+  font-size: 1rem;
+}
+
+.tournament-html-content p {
+  margin-bottom: 1rem;
+}
+
+.tournament-html-content ul,
+.tournament-html-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tournament-html-content ul {
+  list-style-type: disc;
+}
+
+.tournament-html-content ol {
+  list-style-type: decimal;
+}
+
+.tournament-html-content li {
+  margin-bottom: 0.375rem;
+}
+
+.tournament-html-content a {
+  color: hsl(var(--jaffa-400));
+  text-decoration: underline;
+}
+
+.tournament-html-content strong,
+.tournament-html-content b {
+  color: #ffffff;
+  font-weight: 700;
+}
