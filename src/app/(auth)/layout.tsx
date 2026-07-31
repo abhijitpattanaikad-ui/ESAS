@@ -21,7 +21,7 @@ export default function AuthLayout({children}: { children: React.ReactNode }) {
           <div className="w-1/2 left-panel relative bg-linear-to-b from-[#1b0620] to-[#140217]">
             <header className="flex justify-between items-start">
               <div className="flex items-center gap-3">
-                <Link href="/"><img src="/images/goezpz-logo.png" alt="GoEzPz" className="h-16 w-auto object-contain"/></Link>
+                <Link href="/" aria-label="GoEzPz home"><img src="/images/goezpz-logo.png" alt="GoEzPz" className="h-16 w-auto object-contain"/></Link>
               </div>
               
               <nav className="text-sm mt-1">

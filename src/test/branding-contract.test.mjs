@@ -28,3 +28,15 @@ test("customer-facing product surfaces use the GoEzPz brand", async () => {
   }
   assert.deepEqual(failures, []);
 });
+
+test("brand home links have an explicit accessible name", async () => {
+  const authLayout = await readFile("src/app/(auth)/layout.tsx", "utf8");
+  assert.match(authLayout, /<Link href="\/" aria-label="GoEzPz home">/);
+});
+
+test("README keeps source and upstream integration wording brand-neutral", async () => {
+  const readme = await readFile("README.md", "utf8");
+  assert.match(readme, /supplied application source/);
+  assert.match(readme, /configured upstream API/);
+  assert.doesNotMatch(readme, /GoEzPz upstream API/);
+});

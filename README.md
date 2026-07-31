@@ -2,7 +2,7 @@
 
 GoEzPz is the Next.js web application for tournament discovery, registration, brackets, account management, partner discovery, and public marketing pages.
 
-This repository was rebuilt from the supplied GoEzPz source with a production-safety focus. The application now treats the upstream API as authoritative: it never substitutes mock tournament or bracket results when a request fails.
+This repository was rebuilt from the supplied application source with a production-safety focus. The application now treats the upstream API as authoritative: it never substitutes mock tournament or bracket results when a request fails.
 
 ## Architecture
 
@@ -20,7 +20,7 @@ Next.js same-origin API routes (BFF)
   └─ server-only upstream credentials
   │
   ▼
-GoEzPz upstream API
+Configured upstream API
 ```
 
 Security-critical identity is derived from the validated upstream bearer token. Browser code does not store bearer tokens or submit a user ID for authorization.
@@ -29,7 +29,7 @@ Security-critical identity is derived from the validated upstream bearer token. 
 
 - Node.js 22 or newer
 - npm 10 or newer
-- Access to the configured GoEzPz upstream API
+- Access to the configured upstream API
 
 ## Local setup
 
