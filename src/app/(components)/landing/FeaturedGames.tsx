@@ -55,13 +55,13 @@ export default function FeaturedGames({ initialGames = [], availability = "ready
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={reduceMotion ? undefined : { duration: 0.45, ease: "easeOut" }}
             viewport={{ once: true, amount: 0.15 }}
-            className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:grid md:grid-cols-3 md:overflow-visible md:snap-none lg:grid-cols-5"
+            className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:flex-wrap md:justify-center md:overflow-visible md:snap-none"
           >
             {games.map((game) => (
               <GlassCard
                 as="li"
                 key={game.id}
-                className="w-[70vw] max-w-[260px] shrink-0 snap-center p-3 md:w-auto md:max-w-none"
+                className="w-[70vw] max-w-[260px] shrink-0 snap-center p-3 md:w-[calc(33.333%_-_0.667rem)] md:max-w-none lg:w-[calc(20%_-_0.8rem)]"
               >
                 <GameCard game={game} />
               </GlassCard>

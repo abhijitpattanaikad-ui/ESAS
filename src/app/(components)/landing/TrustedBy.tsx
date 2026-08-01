@@ -59,14 +59,14 @@ export default function TrustedBy({ initialBrands = [], availability = "ready" }
             initial={reduceMotion ? false : { opacity: 0, y: 12 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={reduceMotion ? undefined : { duration: 0.45, ease: "easeOut" }}
-            className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 sm:grid sm:grid-cols-2 sm:overflow-visible sm:snap-none md:grid-cols-3 lg:grid-cols-5"
+            className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:flex-wrap md:justify-center md:overflow-visible md:snap-none"
             viewport={{ once: true, amount: 0.2 }}
           >
             {partners.map((partner) => (
               <GlassCard
                 as="li"
                 key={partner.id}
-                className="flex h-28 w-[62vw] max-w-[240px] shrink-0 snap-center items-center justify-center p-5 sm:w-auto sm:max-w-none"
+                className="flex h-28 w-[62vw] max-w-[240px] shrink-0 snap-center items-center justify-center p-5 md:w-[calc(33.333%_-_0.667rem)] md:max-w-none lg:w-[calc(20%_-_0.8rem)]"
               >
                 <PartnerCard partner={partner} />
               </GlassCard>

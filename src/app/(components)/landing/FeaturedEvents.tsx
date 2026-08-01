@@ -46,13 +46,13 @@ export default function FeaturedEvents({
             <p className="text-sm text-slate-200/70">No tournaments are scheduled right now.</p>
           </GlassCard>
         ) : (
-          <div aria-label="Featured tournaments" className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3 sm:grid sm:grid-cols-2 sm:overflow-visible sm:snap-none lg:grid-cols-4">
+          <ul aria-label="Featured tournaments" className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3 sm:grid sm:grid-cols-2 sm:overflow-visible sm:snap-none lg:grid-cols-4">
             {tournaments.slice(0, 4).map((tournament, index) => (
-              <div key={tournament._id ?? `${tournament.name}-${index}`} className="min-w-[280px] snap-center sm:min-w-0">
+              <li key={tournament._id ?? `${tournament.name}-${index}`} className="min-w-[280px] snap-center sm:min-w-0">
                 <EventCard {...tournament} index={index} />
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
     </section>

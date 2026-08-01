@@ -19,3 +19,19 @@ test("homepage sections preserve truthful availability messaging", async () => {
     assert.match(source, /length === 0/);
   }
 });
+
+test("featured tournaments expose their scroll collection as a labelled list", async () => {
+  const source = await readFile("src/app/(components)/landing/FeaturedEvents.tsx", "utf8");
+  assert.match(source, /<ul[^>]*aria-label="Featured tournaments"/);
+  assert.match(source, /<li\s+key=/);
+});
+
+test("game and partner collections center incomplete desktop rows", async () => {
+  const sources = await Promise.all([
+    "FeaturedGames.tsx", "TrustedBy.tsx",
+  ].map((name) => readFile(`src/app/(components)/landing/${name}`, "utf8")));
+  for (const source of sources) {
+    assert.match(source, /md:flex-wrap/);
+    assert.match(source, /md:justify-center/);
+  }
+});
