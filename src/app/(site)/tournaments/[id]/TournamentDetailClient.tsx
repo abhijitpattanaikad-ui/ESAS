@@ -177,7 +177,108 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(19rem,1fr)]">
-          <div className="min-w-0 space-y-6">
+          <aside aria-label="Tournament summary" className="min-w-0 space-y-6 lg:col-start-2 lg:row-start-1 lg:sticky lg:top-24 lg:self-start">
+            <GlassCard className="overflow-hidden border-orange-300/20 p-0">
+              <div className="border-b border-white/10 p-5 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-sm font-semibold text-slate-300">Tournament status</p>
+                  <StatusBadge status={tournament.status} />
+                </div>
+
+                <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <dt className="flex items-center gap-2 text-slate-300/65"><Gamepad2 size={16} aria-hidden="true" />Mode</dt>
+                    <dd className="mt-1 font-semibold text-white">{tournament.mode || "TBA"}</dd>
+                  </div>
+                  <div>
+                    <dt className="flex items-center gap-2 text-slate-300/65"><Monitor size={16} aria-hidden="true" />Platform</dt>
+                    <dd className="mt-1 font-semibold text-white">{tournament.platform || "TBA"}</dd>
+                  </div>
+                  <div>
+                    <dt className="flex items-center gap-2 text-slate-300/65"><Globe size={16} aria-hidden="true" />Location</dt>
+                    <dd className="mt-1 font-semibold text-white">{tournament.isOnline === false ? "Offline" : "Online"}</dd>
+                  </div>
+                  <div>
+                    <dt className="flex items-center gap-2 text-slate-300/65"><Users size={16} aria-hidden="true" />Listed players</dt>
+                    <dd className="mt-1 font-semibold text-white">{tournament.participatedPlayers ? tournament.participatedPlayers.length : "Not listed"}</dd>
+                  </div>
+                </dl>
+
+                {(tournament.city || tournament.country) && (
+                  <p className="mt-5 flex items-start gap-2 border-t border-white/10 pt-4 text-sm text-slate-200/80">
+                    <MapPin size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-300" />
+                    {[tournament.city, tournament.country].filter(Boolean).join(", ")}
+                  </p>
+                )}
+              </div>
+
+              <div aria-busy={pending !== null} aria-live="polite" className="p-5 sm:p-6">
+                {hasJoined ? (
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="w-full"
+                    onClick={() => void mutate("leave")}
+                    disabled={pending !== null || phase === "COMPLETED"}
+                  >
+                    {pending === "leave" ? "LEAVING…" : "LEAVE"}
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="w-full"
+                    onClick={() => void mutate("join")}
+                    disabled={pending !== null || !registrationOpen}
+                  >
+                    {pending === "join" ? "JOINING…" : registrationOpen ? "JOIN TOURNAMENT" : "REGISTRATION CLOSED"}
+                  </Button>
+                )}
+              </div>
+            </GlassCard>
+
+            <Countdown tournament={tournament} />
+
+            <GlassCard as="section" className="p-5 sm:p-6">
+              <h2 id="tournament-schedule-heading" className="text-lg font-bold">Schedule</h2>
+              <dl className="mt-4 divide-y divide-white/10">
+                {SCHEDULE_ITEMS.map(([label, key]) => (
+                  <div key={label} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+                    <Calendar className="mt-0.5 h-5 w-5 shrink-0 text-orange-300" aria-hidden="true" />
+                    <div className="min-w-0">
+                      <dt className="text-xs font-semibold text-slate-300/70">{label}</dt>
+                      <dd className="mt-1 text-sm font-bold leading-5 text-white">{formatDateTime(tournament.schedule[key])}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            </GlassCard>
+
+            {tournament.prizePool && (
+              <GlassCard as="section" className="p-6 text-center">
+                <Trophy className="mx-auto mb-2 text-orange-300" aria-hidden="true" />
+                <div className="text-3xl font-black text-orange-300">{Number(tournament.prizePool).toLocaleString()}</div>
+                <h2 className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-300/65">Prize pool</h2>
+              </GlassCard>
+            )}
+
+            <GlassCard as="section" className="p-5 sm:p-6">
+              <h2 id="tournament-eligibility-heading" className="text-lg font-bold">Eligibility</h2>
+              <div className="mt-3 space-y-2 text-sm leading-6 text-slate-200/75">
+                <p><strong className="text-white">Region:</strong> {tournament.regions || "Any"}</p>
+                {tournament.allowedCountries?.length ? <p><strong className="text-white">Countries:</strong> {tournament.allowedCountries.join(", ")}</p> : null}
+                <p className="flex items-start gap-2">
+                  <Users size={15} aria-hidden="true" className="mt-1 shrink-0" />
+                  Participation is subject to organizer approval and server-side eligibility checks.
+                </p>
+              </div>
+            </GlassCard>
+
+            <Link href="/tournaments" className="block rounded-md text-center text-sm font-semibold text-orange-300 underline decoration-orange-300/50 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300">
+              Explore other tournaments
+            </Link>
+          </aside>
+
+          <div className="min-w-0 space-y-6 lg:col-start-1 lg:row-start-1">
             <div
               role="tablist"
               aria-label="Tournament information"
@@ -302,106 +403,6 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
             </div>
           </div>
 
-          <aside aria-label="Tournament summary" className="min-w-0 space-y-6 lg:sticky lg:top-24 lg:self-start">
-            <GlassCard className="overflow-hidden border-orange-300/20 p-0">
-              <div className="border-b border-white/10 p-5 sm:p-6">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-sm font-semibold text-slate-300">Tournament status</p>
-                  <StatusBadge status={tournament.status} />
-                </div>
-
-                <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <dt className="flex items-center gap-2 text-slate-300/65"><Gamepad2 size={16} aria-hidden="true" />Mode</dt>
-                    <dd className="mt-1 font-semibold text-white">{tournament.mode || "TBA"}</dd>
-                  </div>
-                  <div>
-                    <dt className="flex items-center gap-2 text-slate-300/65"><Monitor size={16} aria-hidden="true" />Platform</dt>
-                    <dd className="mt-1 font-semibold text-white">{tournament.platform || "TBA"}</dd>
-                  </div>
-                  <div>
-                    <dt className="flex items-center gap-2 text-slate-300/65"><Globe size={16} aria-hidden="true" />Location</dt>
-                    <dd className="mt-1 font-semibold text-white">{tournament.isOnline === false ? "Offline" : "Online"}</dd>
-                  </div>
-                  <div>
-                    <dt className="flex items-center gap-2 text-slate-300/65"><Users size={16} aria-hidden="true" />Players</dt>
-                    <dd className="mt-1 font-semibold text-white">{tournament.participatedPlayers?.length ?? 0}</dd>
-                  </div>
-                </dl>
-
-                {(tournament.city || tournament.country) && (
-                  <p className="mt-5 flex items-start gap-2 border-t border-white/10 pt-4 text-sm text-slate-200/80">
-                    <MapPin size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-300" />
-                    {[tournament.city, tournament.country].filter(Boolean).join(", ")}
-                  </p>
-                )}
-              </div>
-
-              <div aria-busy={pending !== null} aria-live="polite" className="p-5 sm:p-6">
-                {hasJoined ? (
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    className="w-full"
-                    onClick={() => void mutate("leave")}
-                    disabled={pending !== null || phase === "COMPLETED"}
-                  >
-                    {pending === "leave" ? "LEAVING…" : "LEAVE"}
-                  </Button>
-                ) : (
-                  <Button
-                    size="lg"
-                    className="w-full"
-                    onClick={() => void mutate("join")}
-                    disabled={pending !== null || !registrationOpen}
-                  >
-                    {pending === "join" ? "JOINING…" : registrationOpen ? "JOIN TOURNAMENT" : "REGISTRATION CLOSED"}
-                  </Button>
-                )}
-              </div>
-            </GlassCard>
-
-            <Countdown tournament={tournament} />
-
-            <GlassCard as="section" className="p-5 sm:p-6">
-              <h2 id="tournament-schedule-heading" className="text-lg font-bold">Schedule</h2>
-              <dl className="mt-4 divide-y divide-white/10">
-                {SCHEDULE_ITEMS.map(([label, key]) => (
-                  <div key={label} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
-                    <Calendar className="mt-0.5 h-5 w-5 shrink-0 text-orange-300" aria-hidden="true" />
-                    <div className="min-w-0">
-                      <dt className="text-xs font-semibold text-slate-300/70">{label}</dt>
-                      <dd className="mt-1 text-sm font-bold leading-5 text-white">{formatDateTime(tournament.schedule[key])}</dd>
-                    </div>
-                  </div>
-                ))}
-              </dl>
-            </GlassCard>
-
-            {tournament.prizePool && (
-              <GlassCard as="section" className="p-6 text-center">
-                <Trophy className="mx-auto mb-2 text-orange-300" aria-hidden="true" />
-                <div className="text-3xl font-black text-orange-300">{Number(tournament.prizePool).toLocaleString()}</div>
-                <h2 className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-300/65">Prize pool</h2>
-              </GlassCard>
-            )}
-
-            <GlassCard as="section" className="p-5 sm:p-6">
-              <h2 id="tournament-eligibility-heading" className="text-lg font-bold">Eligibility</h2>
-              <div className="mt-3 space-y-2 text-sm leading-6 text-slate-200/75">
-                <p><strong className="text-white">Region:</strong> {tournament.regions || "Any"}</p>
-                {tournament.allowedCountries?.length ? <p><strong className="text-white">Countries:</strong> {tournament.allowedCountries.join(", ")}</p> : null}
-                <p className="flex items-start gap-2">
-                  <Users size={15} aria-hidden="true" className="mt-1 shrink-0" />
-                  Participation is subject to organizer approval and server-side eligibility checks.
-                </p>
-              </div>
-            </GlassCard>
-
-            <Link href="/tournaments" className="block rounded-md text-center text-sm font-semibold text-orange-300 underline decoration-orange-300/50 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300">
-              Explore other tournaments
-            </Link>
-          </aside>
         </div>
       </section>
     </main>

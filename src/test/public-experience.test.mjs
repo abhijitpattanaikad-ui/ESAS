@@ -69,3 +69,19 @@ test("tournament detail preserves mutation flow in an accessible glass layout", 
   assert.match(source, /GlassCard/);
   assert.match(source, /clientJson/);
 });
+
+test("tournament detail keeps its primary action before tab content on mobile", async () => {
+  const source = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
+  const summaryPosition = source.indexOf('<aside aria-label="Tournament summary"');
+  const tablistPosition = source.indexOf('role="tablist"');
+  assert.ok(summaryPosition >= 0 && summaryPosition < tablistPosition);
+  assert.match(source, /lg:col-start-2 lg:row-start-1 lg:sticky/);
+  assert.match(source, /lg:col-start-1 lg:row-start-1/);
+});
+
+test("tournament detail distinguishes omitted participant data from an empty list", async () => {
+  const source = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
+  assert.match(source, /Listed players/);
+  assert.match(source, /tournament\.participatedPlayers \? tournament\.participatedPlayers\.length : "Not listed"/);
+  assert.doesNotMatch(source, /participatedPlayers\?\.length \?\? 0/);
+});
