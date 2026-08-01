@@ -3,7 +3,9 @@ import { extname, join, relative } from "node:path";
 import process from "node:process";
 
 const MAX_RASTER_BYTES = 2 * 1024 * 1024;
+const MAX_HERO_VIDEO_BYTES = 4 * 1024 * 1024;
 const MAX_PUBLIC_BYTES = 18 * 1024 * 1024;
+const HERO_VIDEO = join("public", "videos", "goezpz-hero.mp4");
 const RASTER = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
 async function walk(directory) {
@@ -23,9 +25,13 @@ let total = 0;
 const oversized = [];
 for (const file of files) {
   const size = (await stat(file)).size;
+  const assetPath = relative(root, file);
   total += size;
   if (RASTER.has(extname(file).toLowerCase()) && size > MAX_RASTER_BYTES) {
-    oversized.push(`${relative(root, file)} (${(size / 1024 / 1024).toFixed(2)} MiB)`);
+    oversized.push(`${assetPath} (${(size / 1024 / 1024).toFixed(2)} MiB; raster limit 2 MiB)`);
+  }
+  if (assetPath === HERO_VIDEO && size > MAX_HERO_VIDEO_BYTES) {
+    oversized.push(`${assetPath} (${(size / 1024 / 1024).toFixed(2)} MiB; hero video limit 4 MiB)`);
   }
 }
 if (oversized.length || total > MAX_PUBLIC_BYTES) {

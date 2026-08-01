@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { brandService } from "@/app/(services)/brandService";
+import { buttonStyles, GlassCard } from "@/components/ui";
 
 export const metadata = {
   title: "Our Partners",
-  description: "Partners and sponsors of the XeSports platform.",
+  description: "Partners and sponsors of the GoEzPz platform.",
 };
 
 export default async function PartnersPage() {
@@ -16,29 +18,32 @@ export default async function PartnersPage() {
       <div className="absolute top-0 left-0 right-0 h-[40%] bg-linear-to-b from-woodsmoke-950 via-woodsmoke-950/60 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-linear-to-t from-woodsmoke-950 via-woodsmoke-950/60 to-transparent pointer-events-none" />
 
-      <div className="container relative z-10 mx-auto">
-        <div className="mb-10 text-center md:mb-16">
-          <h1 className="heading-font px-4 text-2xl font-bold uppercase md:text-5xl lg:text-6xl">
-            <span className="bg-linear-to-r from-orange-400 via-jaffa-500 to-red-600 bg-clip-text text-transparent">
-              Our partners
-            </span>
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm font-medium uppercase tracking-widest text-white/40 md:text-base">
-            The brands and organizations making this possible.
+      <div className="container relative z-10 mx-auto max-w-7xl">
+        <div className="mb-10 max-w-2xl md:mb-14">
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-orange-300">Alongside GoEzPz</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Our partners</h1>
+          <p className="mt-4 text-base text-slate-200/80">
+            The brands and organizations currently represented in the GoEzPz partner catalogue.
           </p>
         </div>
 
         {result.kind === "error" || result.kind === "not-found" ? (
-          <div role="alert" className="mx-auto max-w-2xl rounded-2xl border border-orange-400/25 bg-black/55 p-10 text-center">
-            <h2 className="text-xl font-bold text-white">Partner data is temporarily unavailable</h2>
-            <p className="mt-2 text-sm text-orange-100/70">Please refresh the page to try again.</p>
-          </div>
+          <GlassCard as="div" className="mx-auto max-w-2xl border-orange-400/25 p-10 text-center">
+            <div role="alert">
+              <h2 className="text-xl font-bold text-white">Partner data is temporarily unavailable</h2>
+              <p className="mt-2 text-sm text-orange-100/75">
+                We could not load reliable partner data.
+              </p>
+              <Link href="/partners" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Refresh partner page</Link>
+            </div>
+          </GlassCard>
         ) : activeBrands.length ? (
-          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 md:grid-cols-3 md:gap-8 lg:grid-cols-4">
+          <ul aria-label="GoEzPz partners" className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
             {activeBrands.map((brand) => (
-              <article
+              <GlassCard
+                as="li"
                 key={brand._id}
-                className="group flex flex-col items-center justify-center rounded-2xl border border-white/5 bg-[#0c0a11]/80 p-6 shadow-2xl backdrop-blur-md transition hover:border-white/20 hover:bg-white/5 md:p-8"
+                className="flex min-h-44 flex-col items-center justify-center p-5 text-center transition-transform duration-200 hover:-translate-y-1 hover:border-orange-300/35 motion-reduce:transform-none md:min-h-52 md:p-7"
               >
                 <div className="relative flex h-20 w-full items-center justify-center md:h-24">
                   <Image
@@ -47,19 +52,21 @@ export default async function PartnersPage() {
                     width={180}
                     height={80}
                     sizes="(max-width: 768px) 40vw, 180px"
-                    className="object-contain grayscale opacity-70 transition group-hover:opacity-100 group-hover:grayscale-0"
+                    className="max-h-full w-auto max-w-full object-contain"
                   />
                 </div>
-                <h2 className="mt-4 text-center text-sm font-medium tracking-wide text-gray-400 transition-colors group-hover:text-white md:text-base">
+                <h2 className="mt-4 text-sm font-medium tracking-wide text-slate-100 md:text-base">
                   {brand.name}
                 </h2>
-              </article>
+              </GlassCard>
             ))}
-          </div>
+          </ul>
         ) : (
-          <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-black/40 p-10 text-center">
-            <h2 className="text-xl font-bold text-white">Partners will be announced soon</h2>
-          </div>
+          <GlassCard className="mx-auto max-w-2xl p-10 text-center">
+            <h2 className="text-xl font-bold text-white">No active partners are listed</h2>
+            <p className="mt-2 text-sm text-slate-300/80">The partner catalogue currently has no active entries.</p>
+            <Link href="/" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Return home</Link>
+          </GlassCard>
         )}
       </div>
     </section>

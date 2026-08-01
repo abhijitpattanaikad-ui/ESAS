@@ -73,7 +73,7 @@ export default function ConsentManager() {
     <>
       {analyticsEnabled && tagManagerId ? (
         <Script
-          id="xesports-tag-manager"
+          id="goezpz-tag-manager"
           src={`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(tagManagerId)}`}
           strategy="afterInteractive"
         />
@@ -88,7 +88,7 @@ export default function ConsentManager() {
             Your privacy choices
           </h2>
           <p className="mt-2 text-sm leading-6 text-white/70">
-            XeSports uses essential cookies for secure account and tournament functions. Analytics stays off unless you choose to enable it. Sensitive sign-in, verification, and password-reset routes are excluded from analytics initialization. Read our{" "}
+            GoEzPz uses essential cookies for secure account and tournament functions. Analytics stays off unless you choose to enable it. Sensitive sign-in, verification, and password-reset routes are excluded from analytics initialization. Read our{" "}
             <Link className="font-semibold text-jaffa-400 underline underline-offset-4" href="/privacy">
               Privacy Policy
             </Link>

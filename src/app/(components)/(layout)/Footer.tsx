@@ -1,10 +1,11 @@
 // src/app/(components)/(layout)/Footer.tsx
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { GlassCard } from "@/components/ui";
 
 // Importing icons from UI index
 import {
@@ -31,6 +32,13 @@ interface SocialLink {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const reduceMotion = useReducedMotion();
+  const [mediaMounted, setMediaMounted] = useState(false);
+  const motionEnabled = mediaMounted && reduceMotion === false;
+
+  useEffect(() => {
+    setMediaMounted(true);
+  }, []);
 
   const NAV_LINKS: Record<string, FooterLink[]> = {
     EXPLORE: [
@@ -63,39 +71,40 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="text-white">
-      {/* Top Section */}
-      <div className="bg-linear-to-b from-[#1A0924] to-[#140009]">
-        <div className="container mx-auto px-6 sm:px-10 lg:px-16 py-12 md:py-16">
-
-          {/* Desktop Layout */}
-          <div className="hidden sm:grid grid-cols-[3fr_1fr_1fr_1fr] gap-x-12">
+    <footer className="border-t border-[var(--border-subtle)] bg-woodsmoke-950 px-4 py-8 text-white sm:px-6">
+      <div className="mx-auto max-w-7xl">
+        <GlassCard className="p-6 sm:p-8 lg:p-10">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))] lg:gap-8">
             <div>
-              <Link href="/" aria-label="Home" className="block mb-5">
+              <Link href="/" aria-label="GoEzPz home" className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300">
                 <Image
-                  src="/images/exLogo.png"
-                  alt="ExSports Logo"
-                  width={110}
-                  height={108}
+                  src="/images/goezpz-logo.png"
+                  alt="GoEzPz"
+                  width={372}
+                  height={250}
                   priority
                   draggable={false}
+                  className="h-auto w-28 object-contain"
                 />
               </Link>
+              <p className="mt-4 max-w-sm text-sm leading-6 text-slate-200/75">
+                A home for competitive play, built for players and the communities that support them.
+              </p>
             </div>
 
             {Object.entries(NAV_LINKS).map(([heading, links]) => (
               <div key={heading}>
-                <h4 className="text-sm font-semibold mb-3 uppercase tracking-wide">
+                <h4 className="text-sm font-bold uppercase tracking-[0.14em] text-white">
                   {heading}
                 </h4>
-                <ul className="space-y-2">
+                <ul className="mt-4 space-y-2.5">
                   {links.map((link) => (
                     <li key={link.name}>
                       <Link
                         href={link.href}
                         target={link.external ? "_blank" : undefined}
                         rel={link.external ? "noopener noreferrer" : undefined}
-                        className="text-[#CFCFCF] text-sm hover:text-white transition-colors"
+                        className="rounded-sm text-sm text-slate-200/75 transition-colors hover:text-orange-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
                       >
                         {link.name}
                       </Link>
@@ -105,76 +114,29 @@ export default function Footer() {
               </div>
             ))}
           </div>
+        </GlassCard>
 
-          {/* Mobile Layout */}
-          <div className="sm:hidden flex flex-col items-start">
-            <Image
-              src="/images/exLogo.png"
-              alt="ExSports Logo"
-              width={90}
-              height={90}
-              priority
-              draggable={false}
-              className="mb-8"
-            />
-
-            <div className="grid grid-cols-3 gap-y-6 gap-x-6 w-full">
-              {Object.entries(NAV_LINKS).map(([heading, links]) => (
-                <div key={heading}>
-                  <h4 className="text-[12px] font-semibold mb-2 uppercase tracking-wide">
-                    {heading}
-                  </h4>
-                  <ul className="space-y-1.5">
-                    {links.map((link) => (
-                      <li key={link.name}>
-                        <Link
-                          href={link.href}
-                          target={link.external ? "_blank" : undefined}
-                          rel={link.external ? "noopener noreferrer" : undefined}
-                          className="text-[#CFCFCF] text-[13px] hover:text-white transition-colors"
-                        >
-                          {link.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="bg-[#120621]">
-        <div className="
-          container mx-auto
-          flex flex-col md:flex-row
-          justify-between items-center
-          gap-6 px-6 sm:px-10 lg:px-16 py-5 pb-20 md:pb-5
-        ">
-          <p className="text-[#CFCFCF] text-sm">
-            © {currentYear} - XeSports by Techxhub - All rights reserved.
+        <div className="flex flex-col items-center justify-between gap-5 px-2 pb-12 pt-6 text-center md:flex-row md:pb-2 md:text-left">
+          <p className="text-sm text-slate-200/75">
+            © {currentYear} - GoEzPz by Techxhub - All rights reserved.
           </p>
 
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-3" aria-label="GoEzPz social media">
             {SOCIAL_LINKS.map(({ label, icon, href }) => (
               <motion.a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Visit XeSports on ${label}`}
-                className="text-[#CFCFCF] hover:text-orange-500 transition-colors"
-                whileHover={{ scale: 1.15 }}
-                transition={{ duration: 0.2 }}
+                aria-label={`Visit GoEzPz on ${label}`}
+                className="rounded-full border border-[var(--border-subtle)] p-2.5 text-slate-100 transition-colors hover:border-orange-300/50 hover:bg-orange-300/10 hover:text-orange-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
+                whileHover={motionEnabled ? { scale: 1.08 } : undefined}
+                transition={motionEnabled ? { duration: 0.2 } : undefined}
               >
                 {icon}
               </motion.a>
             ))}
           </div>
-
         </div>
       </div>
     </footer>

@@ -1,12 +1,12 @@
 // src\app\(components)\landing\TrustedBy.tsx
 "use client";
 
-import React from "react";
 import Image from "next/image";
-import useEmblaCarousel from "embla-carousel-react";
-import AutoScroll from "embla-carousel-auto-scroll";
-import { motion, easeOut, useReducedMotion } from "framer-motion";
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { ApiBrand } from "@/app/(services)/brandService";
+import { buttonStyles, GlassCard, SectionHeading } from "@/components/ui";
 import type { Availability } from "./Landing";
 
 type Partner = {
@@ -21,41 +21,6 @@ interface TrustedByProps {
   availability?: Availability;
 }
 
-/* ===========================================================
-   BUILD A TRACK LONG ENOUGH FOR TRUE INFINITE SMOOTH LOOP
-   (No gaps, no empty space, works with AutoScroll)
-=========================================================== */
-function buildInfiniteList(list: Partner[]): Partner[] {
-  if (!list || list.length === 0) return [];
-
-  const MIN_ITEMS = 20; // enough to saturate UX across wide screens
-  const out: Partner[] = [];
-
-  while (out.length < MIN_ITEMS) {
-    out.push(...list);
-  }
-
-  return out;
-}
-
-const containerVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { staggerChildren: 0.08, duration: 0.6, ease: easeOut },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: easeOut },
-  },
-};
-
 const formatPartners = (data: ApiBrand[]): Partner[] => {
   return data
     .filter((item) => item.isActive)
@@ -68,101 +33,72 @@ const formatPartners = (data: ApiBrand[]): Partner[] => {
 };
 
 export default function TrustedBy({ initialBrands = [], availability = "ready" }: TrustedByProps) {
-  const rawPartners = formatPartners(initialBrands);
+  const partners = formatPartners(initialBrands);
   const reduceMotion = useReducedMotion();
-  const partners = buildInfiniteList(rawPartners);
+  const [mediaMounted, setMediaMounted] = useState(false);
+  const motionEnabled = mediaMounted && reduceMotion === false;
 
-  const autoScroll = React.useMemo(
-    () => reduceMotion ? null : AutoScroll({
-      speed: 0.35,
-      stopOnInteraction: false,
-      stopOnMouseEnter: false,
-    }),
-    [reduceMotion],
-  );
-
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: "start", dragFree: true },
-    autoScroll ? [autoScroll] : [],
-  );
+  useEffect(() => {
+    setMediaMounted(true);
+  }, []);
 
   return (
-    <section className="relative py-16 bg-transparent overflow-hidden">
+    <section aria-labelledby="trusted-partners-title" className="py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Alongside GoEzPz"
+          title={<span id="trusted-partners-title">Trusted partners</span>}
+          description="Organizations currently represented in the GoEzPz partner catalogue."
+        />
 
-      <motion.div
-        className="container mx-auto px-4 text-center relative z-10"
-        initial={reduceMotion ? false : "hidden"}
-        whileInView={reduceMotion ? undefined : "visible"}
-        viewport={{ once: true, amount: 0.2 }}
-        variants={containerVariants}
-      >
-        <h2 className="mb-12 text-xl md:text-3xl font-bold heading-font">
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 via-orange-600 to-red-600">
-            TRUSTED BY
-          </span>
-        </h2>
-
-        <div className="relative">
-
-          {/* Mask: Left */}
-          <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-20 z-10 pointer-events-none bg-linear-to-r from-woodsmoke-950 to-transparent to-70%" />
-
-          {/* Mask: Right */}
-          <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-20 z-10 pointer-events-none bg-linear-to-l from-woodsmoke-950 to-transparent to-70%" />
-
-          {/* EMBLA VIEWPORT */}
-          {availability === "error" ? (
-            <p role="status" className="py-10 text-sm text-orange-200/80">
+        {availability === "error" ? (
+          <GlassCard className="mt-10 text-center">
+            <p role="status" className="text-sm text-orange-100/80">
               Partner data is temporarily unavailable.
             </p>
-          ) : partners.length === 0 ? (
-            <p className="py-10 text-sm text-white/50">Partners will be announced soon.</p>
-          ) : (
-            <div ref={emblaRef} className="overflow-hidden relative z-0">
-              <div className="flex will-change-transform">
-                {partners.map((partner, index) => (
-                  <motion.div
-                    key={`${partner.id}-${index}`}
-                    variants={itemVariants}
-                    className="
-                      shrink-0 px-4 py-4
-                      min-w-[35%] sm:min-w-[25%] md:min-w-[20%] lg:min-w-[16%]
-                    "
-                  >
-                    <PartnerCard partner={partner} />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          )}
-
-        </div>
-      </motion.div>
+            <Link href="/partners" className={buttonStyles({ variant: "ghost", className: "mt-4" })}>View partner page</Link>
+          </GlassCard>
+        ) : partners.length === 0 ? (
+          <GlassCard className="mt-10 text-center">
+            <p className="text-sm text-slate-200/70">No active partners are currently listed.</p>
+            <Link href="/partners" className={buttonStyles({ variant: "ghost", className: "mt-4" })}>View partner page</Link>
+          </GlassCard>
+        ) : (
+          <motion.ul
+            aria-label="Trusted partners"
+            initial={false}
+            whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
+            transition={motionEnabled ? { duration: 0.45, ease: "easeOut" } : undefined}
+            className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:flex-wrap md:justify-center md:overflow-visible md:snap-none"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            {partners.map((partner) => (
+              <GlassCard
+                as="li"
+                key={partner.id}
+                className="flex h-28 w-[62vw] max-w-[240px] shrink-0 snap-center items-center justify-center p-5 md:w-[calc(33.333%_-_0.667rem)] md:max-w-none lg:w-[calc(20%_-_0.8rem)]"
+              >
+                <PartnerCard partner={partner} />
+              </GlassCard>
+            ))}
+          </motion.ul>
+        )}
+      </div>
     </section>
   );
 }
 
-/* ------------------ PARTNER CARD ------------------ */
 function PartnerCard({ partner }: { partner: Partner }) {
   return (
-    <div
-      className="
-        h-20 sm:h-24 md:h-20
-        flex items-center justify-center
-        shadow-inner
-        hover:scale-[1.03] hover:brightness-110
-        transition-transform duration-300
-      "
-    >
-      <div className="w-32 sm:w-36 md:w-32 relative">
-        <Image
-          src={partner.logo}
-          alt={partner.alt ?? partner.name}
-          width={160}
-          height={70}
-          className="object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
-        />
-      </div>
+    <div className="flex h-full w-full items-center justify-center">
+      <Image
+        src={partner.logo}
+        alt={partner.alt ?? partner.name}
+        width={160}
+        height={70}
+        sizes="(max-width: 639px) 55vw, (max-width: 1023px) 30vw, 160px"
+        className="max-h-16 w-auto object-contain grayscale opacity-75 transition-[filter,opacity] duration-200 hover:grayscale-0 hover:opacity-100 motion-reduce:transition-none"
+      />
     </div>
   );
 }

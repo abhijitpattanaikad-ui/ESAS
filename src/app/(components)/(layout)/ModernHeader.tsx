@@ -2,23 +2,161 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import clsx from "clsx";
-import { ExGlowButton } from "@/app/(components)/ui";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+import { buttonStyles } from "@/components/ui";
+import { cn } from "@/lib/utils";
+
 import ModernProfileButton from "./ModernProfileButton";
 
-interface ModernHeaderProps { isLoggedIn?: boolean }
+interface ModernHeaderProps {
+  isLoggedIn?: boolean;
+}
+
+const PUBLIC_LINKS = [
+  { href: "/tournaments", label: "Tournaments" },
+  { href: "/partners", label: "Partners" },
+] as const;
 
 export default function ModernHeader({ isLoggedIn }: ModernHeaderProps) {
-  const router = useRouter();
+  const pathname = usePathname();
+  const [navigationOpen, setNavigationOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    setNavigationOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!navigationOpen) return;
+    firstMobileLinkRef.current?.focus();
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setNavigationOpen(false);
+      menuButtonRef.current?.focus();
+    }
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [navigationOpen]);
+
+  function isCurrent(href: string): boolean {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
   return (
-    <header className={clsx("fixed top-0 right-0 z-60 flex h-[64px] max-w-[100vw] items-center border-b border-white/5 bg-[#0c0a11] px-4 transition-all duration-300 lg:px-6", isLoggedIn ? "left-0 justify-between lg:left-[72px] lg:justify-end" : "left-0 justify-between")}>
-      <div className={isLoggedIn ? "flex items-center lg:hidden" : "flex items-center"}>
-        <Link href="/" aria-label="XeSports home"><Image src="/images/exLogo.png" alt="XeSports" width={isLoggedIn ? 32 : 40} height={isLoggedIn ? 32 : 40} className="object-contain" /></Link>
+    <header
+      className={cn(
+        "fixed top-2 right-2 left-2 z-60 h-14 rounded-2xl border border-[var(--border-subtle)] bg-[color-mix(in_oklch,var(--surface-glass)_92%,transparent)] shadow-[var(--shadow-public-card)] backdrop-blur-xl transition-[left] duration-300 sm:top-3 sm:right-3 sm:left-3",
+        isLoggedIn && "lg:left-[84px]",
+      )}
+    >
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-3 sm:px-4">
+        <Link
+          href="/"
+          aria-label="GoEzPz home"
+          className="shrink-0 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+        >
+          <Image
+            src="/images/goezpz-logo.png"
+            alt="GoEzPz"
+            width={96}
+            height={65}
+            className="h-10 w-auto object-contain"
+            priority
+          />
+        </Link>
+
+        <nav aria-label="Primary navigation" className="hidden items-center gap-1 md:flex">
+          {PUBLIC_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={isCurrent(link.href) ? "page" : undefined}
+              className={cn(
+                buttonStyles({ variant: "ghost", size: "sm" }),
+                isCurrent(link.href) && "bg-orange-400/10 text-white",
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="ml-auto flex items-center gap-2">
+          {isLoggedIn ? (
+            <ModernProfileButton />
+          ) : (
+            <div className="hidden items-center gap-2 md:flex">
+              <Link href="/login" className={buttonStyles({ variant: "ghost", size: "sm" })}>
+                Sign in
+              </Link>
+              <Link href="/login" className={buttonStyles({ size: "sm" })}>
+                Let&apos;s Play
+              </Link>
+            </div>
+          )}
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-label={navigationOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={navigationOpen}
+            aria-controls="mobile-public-navigation"
+            onClick={() => setNavigationOpen((open) => !open)}
+            className="inline-flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 md:hidden"
+          >
+            {navigationOpen ? <X aria-hidden="true" className="size-5" /> : <Menu aria-hidden="true" className="size-5" />}
+          </button>
+        </div>
       </div>
-      <div className="flex h-full items-center gap-4 lg:gap-6">
-        {isLoggedIn ? <><div className="mx-2 hidden h-8 w-px bg-white/10 sm:block" /><ModernProfileButton /></> : <ExGlowButton onClick={() => router.push("/login")}>LET&apos;S PLAY!</ExGlowButton>}
-      </div>
+
+      {navigationOpen ? (
+        <nav
+          id="mobile-public-navigation"
+          aria-label="Mobile navigation"
+          className="absolute top-[calc(100%+0.5rem)] right-0 left-0 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-elevated)] p-3 shadow-[var(--shadow-public-card)] md:hidden"
+        >
+          <div className="grid gap-1">
+            {PUBLIC_LINKS.map((link, index) => (
+              <Link
+                key={link.href}
+                ref={index === 0 ? firstMobileLinkRef : undefined}
+                href={link.href}
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+                onClick={() => setNavigationOpen(false)}
+                className={cn(
+                  buttonStyles({ variant: "ghost", size: "lg", className: "justify-start" }),
+                  isCurrent(link.href) && "bg-orange-400/10 text-white",
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            {!isLoggedIn ? (
+              <div className="mt-2 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
+                <Link
+                  href="/login"
+                  onClick={() => setNavigationOpen(false)}
+                  className={buttonStyles({ variant: "secondary" })}
+                >
+                  Sign in
+                </Link>
+                <Link
+                  href="/login"
+                  onClick={() => setNavigationOpen(false)}
+                  className={buttonStyles()}
+                >
+                  Let&apos;s Play
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        </nav>
+      ) : null}
     </header>
   );
 }

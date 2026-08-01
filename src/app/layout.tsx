@@ -7,8 +7,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "XeSports — The Future of Play",
-    template: "%s | XeSports",
+    default: "GoEzPz — The Future of Play",
+    template: "%s | GoEzPz",
   },
   description: "Join competitive gaming tournaments, communities, and live esports experiences.",
 };

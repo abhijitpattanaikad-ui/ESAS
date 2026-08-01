@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { EventCard } from "@/app/(components)/shared/EventCard";
-import { ExLinkButton } from "@/app/(components)/ui";
+import { buttonStyles, GlassCard, SectionHeading } from "@/components/ui";
 import type { ApiTournament } from "@/app/(types)/event";
 import type { Availability } from "./Landing";
 
@@ -19,47 +18,41 @@ export default function FeaturedEvents({
   availability = "ready",
 }: FeaturedEventsProps) {
   const tournaments = initialTournaments;
-  const router = useRouter();
-
 
   return (
-    <section className="relative py-16 bg-woodsmoke-950 px-4 bg-[image:--features-bg] bg-cover bg-center bg-no-repeat">
-      <div className="absolute inset-0 bg-[rgba(0,0,0,0.7)] pointer-events-none" />
+    <section aria-labelledby="featured-tournaments-title" className="relative py-20 sm:py-24">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,var(--surface-page),rgb(24_35_58_/_0.72),var(--surface-page))]" />
 
-      <div className="absolute top-0 left-0 right-0 h-[40%] bg-linear-to-b from-woodsmoke-950 via-woodsmoke-950/60 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-linear-to-t from-woodsmoke-950 via-woodsmoke-950/60 to-transparent pointer-events-none" />
-
-      <div className="container mx-auto z-10 relative">
-        <h2 className="mb-12 text-2xl md:text-3xl font-bold heading-font text-center">
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 via-orange-600 to-red-600">
-            FEATURED TOURNAMENTS
-          </span>
-        </h2>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Compete next"
+          title={<span id="featured-tournaments-title">Featured tournaments</span>}
+          description="Explore the competitions currently highlighted by GoEzPz."
+          action={showCTA ? (
+            <Link href="/tournaments" className={buttonStyles({ variant: "ghost" })}>
+              View all tournaments
+            </Link>
+          ) : undefined}
+        />
 
         {availability === "error" ? (
-          <p role="status" className="text-center text-orange-200/80 text-sm py-8">
-            Featured tournaments are temporarily unavailable.
-          </p>
+          <GlassCard className="mt-10 text-center">
+            <p role="status" className="text-sm text-orange-100/80">
+              Featured tournaments are temporarily unavailable.
+            </p>
+          </GlassCard>
         ) : tournaments.length === 0 ? (
-          <p className="text-center text-white/50 text-sm py-8">
-            No tournaments are scheduled right now.
-          </p>
+          <GlassCard className="mt-10 text-center">
+            <p className="text-sm text-slate-200/70">No tournaments are scheduled right now.</p>
+          </GlassCard>
         ) : (
-          <div className="flex flex-row overflow-x-auto gap-6 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 lg:grid-cols-4 px-8 sm:max-xl:px-0 2xl:max-[1744px]:px-10 min-[1745px]:px-24 gap-y-8 justify-items-center sm:overflow-visible sm:snap-none pb-2">
+          <ul aria-label="Featured tournaments" className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3 sm:grid sm:grid-cols-2 sm:overflow-visible sm:snap-none lg:grid-cols-4">
             {tournaments.slice(0, 4).map((tournament, index) => (
-              <div key={tournament._id ?? `${tournament.name}-${index}`} className="min-w-[280px] sm:min-w-0 snap-center">
+              <li key={tournament._id ?? `${tournament.name}-${index}`} className="min-w-[280px] snap-center sm:min-w-0">
                 <EventCard {...tournament} index={index} />
-              </div>
+              </li>
             ))}
-          </div>
-        )}
-
-        {showCTA && (
-          <div className="sm:mt-2 flex justify-end px-0 sm:max-xl:px-8 2xl:max-[1744px]:px-12 min-[1745px]:px-25">
-            <ExLinkButton onClick={() => router.push("/tournaments")}>
-              VIEW ALL
-            </ExLinkButton>
-          </div>
+          </ul>
         )}
       </div>
     </section>

@@ -2,6 +2,17 @@
 @import "tailwindcss";
 
 :root {
+  --surface-page: #101624;
+  --surface-glass: rgb(20 30 48 / 0.72);
+  --surface-elevated: #18233a;
+  --border-subtle: rgb(255 255 255 / 0.12);
+  --brand-primary: #f97316;
+  --brand-hover: #ea580c;
+  --shadow-public-card: 0 20px 48px rgb(0 0 0 / 0.28);
+  --shadow-public-glow: 0 12px 28px rgb(249 115 22 / 0.28);
+  --radius-public-card: 1.25rem;
+  --radius-public-control: 0.75rem;
+
   /*--background: hsl(var(--color-woodsmoke-900));*/
   --font-barlow-var: var(--font-barlow);
   --font-exo-var: var(--font-exo);

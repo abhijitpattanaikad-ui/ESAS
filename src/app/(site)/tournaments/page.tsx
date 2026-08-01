@@ -1,9 +1,11 @@
+import Link from "next/link";
 import TournamentList from "@/app/(components)/shared/TournamentList";
 import { tournamentService } from "@/app/(services)/tournamentService";
+import { buttonStyles, GlassCard } from "@/components/ui";
 
 export const metadata = {
   title: "Tournaments",
-  description: "Explore current and upcoming XeSports tournaments.",
+  description: "Explore current and upcoming GoEzPz tournaments.",
 };
 
 export default async function TournamentsPage() {
@@ -15,32 +17,33 @@ export default async function TournamentsPage() {
       <div className="absolute top-0 left-0 right-0 h-[40%] bg-linear-to-b from-woodsmoke-950 via-woodsmoke-950/60 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-linear-to-t from-woodsmoke-950 via-woodsmoke-950/60 to-transparent pointer-events-none" />
 
-      <div className="container relative z-10 mx-auto">
-        <div className="mb-10 text-center md:mb-16">
-          <h1 className="heading-font px-4 text-2xl font-bold uppercase md:text-5xl lg:text-6xl">
-            <span className="bg-linear-to-r from-orange-400 via-jaffa-500 to-red-600 bg-clip-text text-transparent">
-              Explore tournaments
-            </span>
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm font-medium uppercase tracking-widest text-white/40 md:text-base">
-            Find and join elite esports competitions in the region.
+      <div className="container relative z-10 mx-auto max-w-7xl">
+        <div className="mb-10 md:mb-14">
+          <p className="text-sm font-bold uppercase tracking-[0.16em] text-orange-300">Compete with GoEzPz</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Explore tournaments</h1>
+          <p className="mt-4 max-w-2xl text-base text-slate-200/80">
+            Search current and past GoEzPz competitions by tournament, game, or status.
           </p>
         </div>
 
         {result.kind === "success" ? (
           <TournamentList initialTournaments={result.data} />
         ) : result.kind === "empty" ? (
-          <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-black/40 p-10 text-center">
-            <h2 className="text-xl font-bold text-white">No tournaments are scheduled</h2>
-            <p className="mt-2 text-sm text-white/55">New competitions will appear here when registration opens.</p>
-          </div>
+          <GlassCard className="mx-auto max-w-2xl p-10 text-center">
+            <h2 className="text-xl font-bold text-white">No tournaments are listed</h2>
+            <p className="mt-2 text-sm text-slate-300/80">The tournament catalogue is currently empty.</p>
+            <Link href="/" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Return home</Link>
+          </GlassCard>
         ) : (
-          <div role="alert" className="mx-auto max-w-2xl rounded-2xl border border-orange-400/25 bg-black/55 p-10 text-center">
-            <h2 className="text-xl font-bold text-white">Tournament service unavailable</h2>
-            <p className="mt-2 text-sm text-orange-100/70">
-              We could not load reliable tournament data. Refresh this page rather than relying on cached or fabricated results.
-            </p>
-          </div>
+          <GlassCard as="div" className="mx-auto max-w-2xl border-orange-400/25 p-10 text-center">
+            <div role="alert">
+              <h2 className="text-xl font-bold text-white">Tournament service unavailable</h2>
+              <p className="mt-2 text-sm text-orange-100/75">
+                We could not load reliable tournament data.
+              </p>
+              <Link href="/tournaments" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Refresh tournaments</Link>
+            </div>
+          </GlassCard>
         )}
       </div>
     </section>

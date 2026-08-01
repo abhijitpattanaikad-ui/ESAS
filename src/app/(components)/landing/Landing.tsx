@@ -28,24 +28,20 @@ export default function Landing({
   gameAvailability,
 }: LandingProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-hidden bg-[var(--surface-page)]">
       <HeroSection />
-      <div className="relative w-full bg-(image:--landing-combined-bg) bg-cover bg-center bg-no-repeat overflow-hidden">
-        <div className="absolute inset-0 bg-woodsmoke-950/90 pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-woodsmoke-950 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-woodsmoke-950 to-transparent pointer-events-none" />
-        <div className="relative z-10">
-          <CoreFeatures />
-          <TrustedBy initialBrands={initialBrands} availability={brandAvailability} />
-        </div>
+      <div className="relative isolate">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_28%,rgb(249_115_22_/_0.10),transparent_28%),radial-gradient(circle_at_88%_68%,rgb(59_130_246_/_0.08),transparent_30%)]" />
+        <FeaturedEvents
+          initialTournaments={initialTournaments}
+          availability={tournamentAvailability}
+          showCTA
+        />
+        <CoreFeatures />
+        <FeaturedGames initialGames={initialGames} availability={gameAvailability} />
+        <TrustedBy initialBrands={initialBrands} availability={brandAvailability} />
+        <Advantages />
       </div>
-      <FeaturedEvents
-        initialTournaments={initialTournaments}
-        availability={tournamentAvailability}
-        showCTA
-      />
-      <FeaturedGames initialGames={initialGames} availability={gameAvailability} />
-      <Advantages />
     </div>
   );
 }
