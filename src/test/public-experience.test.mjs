@@ -70,6 +70,12 @@ test("tournament detail preserves mutation flow in an accessible glass layout", 
   assert.match(source, /clientJson/);
 });
 
+test("tournament detail permits the upstream Google avatar host through image and CSP policies", async () => {
+  const config = await readFile("next.config.ts", "utf8");
+  const allowedOccurrences = config.match(/lh3\.googleusercontent\.com/g) ?? [];
+  assert.equal(allowedOccurrences.length, 2);
+});
+
 test("tournament detail keeps its primary action before tab content on mobile", async () => {
   const source = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
   const summaryPosition = source.indexOf('<aside aria-label="Tournament summary"');

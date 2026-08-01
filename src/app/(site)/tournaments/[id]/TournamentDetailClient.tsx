@@ -11,6 +11,7 @@ import type { ApiTournament } from "@/app/(types)/event";
 import { Button, GlassCard, StatusBadge } from "@/components/ui";
 import { htmlToSafeText, safeExternalUrl } from "@/features/tournaments/content";
 import { deriveTournamentPhase, getCountdownParts, getCountdownTarget } from "@/features/tournaments/phase";
+import { formatPrizePool } from "@/features/tournaments/presentation";
 import { clientJson } from "@/lib/http/client";
 
 const BracketView = dynamic(() => import("@/app/(components)/shared/BracketView").then((module) => module.BracketView), {
@@ -256,7 +257,7 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
             {tournament.prizePool && (
               <GlassCard as="section" className="p-6 text-center">
                 <Trophy className="mx-auto mb-2 text-orange-300" aria-hidden="true" />
-                <div className="text-3xl font-black text-orange-300">{Number(tournament.prizePool).toLocaleString()}</div>
+                <div className="text-3xl font-black text-orange-300">{formatPrizePool(tournament.prizePool)}</div>
                 <h2 className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-300/65">Prize pool</h2>
               </GlassCard>
             )}

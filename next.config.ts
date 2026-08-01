@@ -10,7 +10,7 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://cdn.xesports.pro https://xesports-assets.s3.me-central-1.amazonaws.com https://www.google-analytics.com https://www.googletagmanager.com",
+  "img-src 'self' data: blob: https://cdn.xesports.pro https://xesports-assets.s3.me-central-1.amazonaws.com https://lh3.googleusercontent.com https://www.google-analytics.com https://www.googletagmanager.com",
   "font-src 'self' data:",
   "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
   "frame-src 'none'",
@@ -41,6 +41,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "xesports-assets.s3.me-central-1.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
         pathname: "/**",
       },
     ],

@@ -33,9 +33,12 @@ test("platform hero uses approved copy, local media, and tournament CTA", async 
   assert.doesNotMatch(hero, /https?:\/\//);
 });
 
-test("animated banner supports reduced motion and poster fallback", async () => {
+test("animated banner defers video until hydration and supports reduced motion and poster fallback", async () => {
   const banner = await readFile("src/components/ui/animated-banner.tsx", "utf8");
   assert.match(banner, /useReducedMotion/);
+  assert.match(banner, /const \[mediaMounted, setMediaMounted\] = useState\(false\)/);
+  assert.match(banner, /setMediaMounted\(true\)/);
+  assert.match(banner, /const showVideo = mediaMounted &&/);
   assert.match(banner, /onError/);
   assert.match(banner, /posterSrc/);
   assert.match(banner, /next\/link/);

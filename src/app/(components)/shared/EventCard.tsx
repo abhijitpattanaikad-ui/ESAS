@@ -6,7 +6,7 @@ import type * as React from "react";
 import { CalendarDays, Gamepad2, Monitor, Trophy, UsersRound } from "lucide-react";
 import type { ApiTournament, ApiTournamentStatus } from "@/app/(types)/event";
 import { Button, GlassCard, StatusBadge } from "@/components/ui";
-import { formatTeamFormat } from "@/features/tournaments/presentation";
+import { formatPrizePool, formatTeamFormat } from "@/features/tournaments/presentation";
 
 const STATUS_ACCENT_CLASSES: Record<ApiTournamentStatus, string> = {
   Upcoming: "hover:border-sky-300/50",
@@ -36,11 +36,6 @@ function formatDateWindow(start?: string, end?: string): string | null {
   if (formattedStart) return `Starts ${formattedStart}`;
   if (formattedEnd) return `Ends ${formattedEnd}`;
   return null;
-}
-
-function formatPrizePool(value: string | number): string {
-  const amount = typeof value === "number" ? value : Number(value);
-  return Number.isFinite(amount) ? amount.toLocaleString("en-AE") : String(value);
 }
 
 interface MetadataItemProps {

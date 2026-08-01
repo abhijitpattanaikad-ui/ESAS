@@ -47,7 +47,8 @@
 - [ ] Focus remains trapped in the crop dialog and returns to the trigger.
 - [ ] Form errors are announced and associated with their fields.
 - [ ] Reduced-motion preference stops automatic motion.
-- [ ] Mobile layouts are verified at 320 px, 375 px, 768 px, and 1024 px widths.
+- [ ] Hero poster content remains usable before video playback, after video failure, and when reduced motion is enabled.
+- [ ] Public layouts are verified at 375 px, 430 px, 768 px, 1024 px, 1440 px, and 1920 px with no page-level horizontal overflow; bracket overflow remains contained.
 
 ## Performance and observability
 

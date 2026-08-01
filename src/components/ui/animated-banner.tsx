@@ -104,12 +104,17 @@ export function AnimatedBanner({
   className,
 }: AnimatedBannerProps) {
   const reduceMotion = useReducedMotion();
+  const [mediaMounted, setMediaMounted] = useState(false);
   const [failedVideoSrc, setFailedVideoSrc] = useState<string>();
-  const showVideo = Boolean(videoSrc) && reduceMotion === false && failedVideoSrc !== videoSrc;
+  const showVideo = mediaMounted && Boolean(videoSrc) && reduceMotion === false && failedVideoSrc !== videoSrc;
   const isInternalDestination = href
     ? href.startsWith("/") && !href.startsWith("//")
     : false;
   const overlay = `linear-gradient(90deg, ${overlayColor} 0%, color-mix(in oklch, ${overlayColor} 94%, transparent) 32%, color-mix(in oklch, ${overlayColor} 64%, transparent) 58%, color-mix(in oklch, ${overlayColor} 16%, transparent) 100%)`;
+
+  useEffect(() => {
+    setMediaMounted(true);
+  }, []);
 
   const cta = ctaLabel && href ? (
     isInternalDestination ? (

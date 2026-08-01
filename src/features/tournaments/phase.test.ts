@@ -3,7 +3,7 @@ import test from "node:test";
 import type { ApiTournament } from "@/app/(types)/event";
 import { filterTournaments } from "./filter";
 import { deriveTournamentPhase, getCountdownParts } from "./phase";
-import { formatTeamFormat } from "./presentation";
+import { formatPrizePool, formatTeamFormat } from "./presentation";
 
 const schedule = {
   registrationStart: "2026-07-01T00:00:00.000Z",
@@ -77,4 +77,10 @@ test("team format prefers explicit format and recognizes only known mode fallbac
   assert.equal(formatTeamFormat(undefined, "duelSolo"), "1v1");
   assert.equal(formatTeamFormat(undefined, "online"), null);
   assert.equal(formatTeamFormat("   ", "ranked"), null);
+});
+
+test("prize pool formatting preserves truthful non-numeric labels", () => {
+  assert.equal(formatPrizePool(5000), "5,000");
+  assert.equal(formatPrizePool("5000"), "5,000");
+  assert.equal(formatPrizePool("TBD"), "TBD");
 });
