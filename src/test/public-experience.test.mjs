@@ -51,3 +51,10 @@ test("tournament cards use shared glass and textual status primitives", async ()
   assert.match(source, /StatusBadge/);
   assert.match(source, /View tournament/);
 });
+
+test("tournament list projection requests card platform and format metadata", async () => {
+  const source = await readFile("src/features/tournaments/api.ts", "utf8");
+  const projection = source.match(/const PROJECT_FIELDS = "([^"]+)"/)?.[1]?.split(/\s+/) ?? [];
+  assert.ok(projection.includes("platform"));
+  assert.ok(projection.includes("format"));
+});

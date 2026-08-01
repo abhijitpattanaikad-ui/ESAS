@@ -4,7 +4,7 @@ import { isUpstreamError } from "@/lib/http/errors";
 import { upstreamJson } from "@/lib/http/upstream";
 import { parseTournamentDetail, parseTournamentList } from "./contracts";
 
-const PROJECT_FIELDS = "name assets prizePool mode schedule isDraft status heading text game buttonText _id";
+const PROJECT_FIELDS = "name assets prizePool mode platform format schedule isDraft status heading text game buttonText _id";
 
 function errorResult(error: unknown, message: string): DataResult<never> {
   if (isUpstreamError(error)) {

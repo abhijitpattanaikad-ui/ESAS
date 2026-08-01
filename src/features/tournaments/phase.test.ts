@@ -3,6 +3,7 @@ import test from "node:test";
 import type { ApiTournament } from "@/app/(types)/event";
 import { filterTournaments } from "./filter";
 import { deriveTournamentPhase, getCountdownParts } from "./phase";
+import { formatTeamFormat } from "./presentation";
 
 const schedule = {
   registrationStart: "2026-07-01T00:00:00.000Z",
@@ -68,4 +69,12 @@ test("tournament filtering combines exact game and status selections", () => {
     filterTournaments(tournaments, { query: "", game: "Valorant", status: "Registration Open" }).map(({ _id }) => _id),
     ["valorant-open"],
   );
+});
+
+test("team format prefers explicit format and recognizes only known mode fallbacks", () => {
+  assert.equal(formatTeamFormat("5v5", "online"), "5v5");
+  assert.equal(formatTeamFormat("  2v2  ", "duelSolo"), "2v2");
+  assert.equal(formatTeamFormat(undefined, "duelSolo"), "1v1");
+  assert.equal(formatTeamFormat(undefined, "online"), null);
+  assert.equal(formatTeamFormat("   ", "ranked"), null);
 });
