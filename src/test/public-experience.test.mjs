@@ -58,3 +58,14 @@ test("tournament list projection requests card platform and format metadata", as
   assert.ok(projection.includes("platform"));
   assert.ok(projection.includes("format"));
 });
+
+test("tournament detail preserves mutation flow in an accessible glass layout", async () => {
+  const source = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
+  assert.match(source, /role="tablist"/);
+  assert.match(source, /role="tab"/);
+  assert.match(source, /aria-selected=/);
+  assert.match(source, /aria-busy=/);
+  assert.match(source, /overflow-x-auto/);
+  assert.match(source, /GlassCard/);
+  assert.match(source, /clientJson/);
+});
