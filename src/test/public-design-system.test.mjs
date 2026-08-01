@@ -43,8 +43,21 @@ test("animated banner supports reduced motion and poster fallback", async () => 
 
 test("public navigation exposes labelled mobile controls", async () => {
   const header = await readFile("src/app/(components)/(layout)/ModernHeader.tsx", "utf8");
-  assert.match(header, /aria-label="Open navigation"/);
+  assert.match(header, /aria-label=\{navigationOpen \? "Close navigation" : "Open navigation"\}/);
   assert.match(header, /aria-expanded=/);
   assert.match(header, /Tournaments/);
   assert.match(header, /Partners/);
+});
+
+test("public navigation preserves the login destination for Let's Play actions", async () => {
+  const header = await readFile("src/app/(components)/(layout)/ModernHeader.tsx", "utf8");
+  const letsPlayLinks = header.match(
+    /<Link(?:(?!<\/Link>)[\s\S])*?href="\/login"(?:(?!<\/Link>)[\s\S])*?Let&apos;s Play(?:(?!<\/Link>)[\s\S])*?<\/Link>/g,
+  ) ?? [];
+  assert.equal(letsPlayLinks.length, 2);
+});
+
+test("signed-in navigation renders one profile controller", async () => {
+  const header = await readFile("src/app/(components)/(layout)/ModernHeader.tsx", "utf8");
+  assert.equal((header.match(/<ModernProfileButton \/>/g) ?? []).length, 1);
 });

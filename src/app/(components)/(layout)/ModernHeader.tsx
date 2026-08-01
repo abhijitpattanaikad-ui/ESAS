@@ -87,31 +87,27 @@ export default function ModernHeader({ isLoggedIn }: ModernHeaderProps) {
           ))}
         </nav>
 
-        <div className="ml-auto hidden items-center gap-2 md:flex">
+        <div className="ml-auto flex items-center gap-2">
           {isLoggedIn ? (
             <ModernProfileButton />
           ) : (
-            <>
+            <div className="hidden items-center gap-2 md:flex">
               <Link href="/login" className={buttonStyles({ variant: "ghost", size: "sm" })}>
                 Sign in
               </Link>
-              <Link href="/signup" className={buttonStyles({ size: "sm" })}>
+              <Link href="/login" className={buttonStyles({ size: "sm" })}>
                 Let&apos;s Play
               </Link>
-            </>
+            </div>
           )}
-        </div>
-
-        <div className="ml-auto flex items-center gap-2 md:hidden">
-          {isLoggedIn ? <ModernProfileButton /> : null}
           <button
             ref={menuButtonRef}
             type="button"
-            aria-label="Open navigation"
+            aria-label={navigationOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={navigationOpen}
             aria-controls="mobile-public-navigation"
             onClick={() => setNavigationOpen((open) => !open)}
-            className="inline-flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+            className="inline-flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 md:hidden"
           >
             {navigationOpen ? <X aria-hidden="true" className="size-5" /> : <Menu aria-hidden="true" className="size-5" />}
           </button>
@@ -150,7 +146,7 @@ export default function ModernHeader({ isLoggedIn }: ModernHeaderProps) {
                   Sign in
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/login"
                   onClick={() => setNavigationOpen(false)}
                   className={buttonStyles()}
                 >
