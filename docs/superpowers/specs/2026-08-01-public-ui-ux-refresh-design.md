@@ -1,7 +1,7 @@
 # GoEzPz Public UI/UX Refresh Design
 
 **Date:** 2026-08-01
-**Status:** Approved design, pending written-spec review
+**Status:** Approved for implementation
 **Scope:** Public customer experience only: shared public navigation and footer, homepage, tournament listing, tournament detail, and partners page. Authentication, profile, and dashboard visual redesigns are excluded from this phase.
 
 ## Objective
