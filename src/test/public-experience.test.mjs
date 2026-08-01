@@ -85,3 +85,13 @@ test("tournament detail distinguishes omitted participant data from an empty lis
   assert.match(source, /tournament\.participatedPlayers \? tournament\.participatedPlayers\.length : "Not listed"/);
   assert.doesNotMatch(source, /participatedPlayers\?\.length \?\? 0/);
 });
+
+test("partners and footer use the public glass system without changing destinations", async () => {
+  const partners = await readFile("src/app/(site)/partners/page.tsx", "utf8");
+  const footer = await readFile("src/app/(components)/(layout)/Footer.tsx", "utf8");
+  assert.match(partners, /GlassCard/);
+  assert.match(partners, /role="alert"/);
+  assert.match(footer, /GlassCard|surface-glass/);
+  assert.match(footer, /support@xesports\.pro/);
+  assert.match(footer, /Visit GoEzPz on/);
+});
