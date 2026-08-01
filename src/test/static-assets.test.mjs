@@ -22,7 +22,18 @@ test("extracts literal image references from TypeScript and CSS", () => {
   ]);
 });
 
-test("reports only literal public image references whose files are missing", async () => {
+test("extracts literal local video references from TypeScript", () => {
+  const source = `
+    const video = "/videos/goezpz-hero.mp4";
+    const remote = "https://cdn.example.com/videos/ignore.mp4";
+  `;
+
+  assert.deepEqual(extractStaticAssetReferences(source), [
+    "/videos/goezpz-hero.mp4",
+  ]);
+});
+
+test("reports only literal public asset references whose files are missing", async () => {
   const root = await mkdtemp(join(tmpdir(), "esas-static-assets-"));
   const sourceRoot = join(root, "src");
   const publicRoot = join(root, "public");

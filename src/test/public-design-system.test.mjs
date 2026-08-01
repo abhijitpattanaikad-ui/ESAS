@@ -23,3 +23,28 @@ test("tailwind-merge is an exact production dependency", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
   assert.match(pkg.dependencies["tailwind-merge"], /^\d+\.\d+\.\d+$/);
 });
+
+test("platform hero uses approved copy, local media, and tournament CTA", async () => {
+  const hero = await readFile("src/app/(components)/landing/HeroSection.tsx", "utf8");
+  assert.match(hero, /Your arena\. Your legacy\./);
+  assert.match(hero, /Discover tournaments, compete with confidence, and make every match count\./);
+  assert.match(hero, /href="\/tournaments"/);
+  assert.match(hero, /goezpz-hero-poster\.webp/);
+  assert.doesNotMatch(hero, /https?:\/\//);
+});
+
+test("animated banner supports reduced motion and poster fallback", async () => {
+  const banner = await readFile("src/components/ui/animated-banner.tsx", "utf8");
+  assert.match(banner, /useReducedMotion/);
+  assert.match(banner, /onError/);
+  assert.match(banner, /posterSrc/);
+  assert.match(banner, /next\/link/);
+});
+
+test("public navigation exposes labelled mobile controls", async () => {
+  const header = await readFile("src/app/(components)/(layout)/ModernHeader.tsx", "utf8");
+  assert.match(header, /aria-label="Open navigation"/);
+  assert.match(header, /aria-expanded=/);
+  assert.match(header, /Tournaments/);
+  assert.match(header, /Partners/);
+});

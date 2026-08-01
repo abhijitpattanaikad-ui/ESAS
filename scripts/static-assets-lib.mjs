@@ -2,8 +2,8 @@ import { access, readFile, readdir, stat } from "node:fs/promises";
 import { dirname, extname, join, relative, resolve } from "node:path";
 
 const SOURCE_EXTENSIONS = new Set([".css", ".js", ".jsx", ".mjs", ".ts", ".tsx"]);
-const STRING_REFERENCE = /(["'`])(\/images\/[^"'`?#]+?)(?:[?#][^"'`]*)?\1/g;
-const CSS_REFERENCE = /url\(\s*(["']?)(\/images\/[^"')?#]+?)(?:[?#][^"')]+)?\1\s*\)/g;
+const STRING_REFERENCE = /(["'`])(\/(?:images|videos)\/[^"'`?#]+?)(?:[?#][^"'`]*)?\1/g;
+const CSS_REFERENCE = /url\(\s*(["']?)(\/(?:images|videos)\/[^"')?#]+?)(?:[?#][^"')]+)?\1\s*\)/g;
 
 async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true }).catch(() => []);
@@ -36,7 +36,9 @@ export function extractStaticAssetReferences(source) {
     pattern.lastIndex = 0;
     for (const match of source.matchAll(pattern)) {
       const reference = normalizeReference(match[2]);
-      if (reference.startsWith("/images/")) references.add(reference);
+      if (reference.startsWith("/images/") || reference.startsWith("/videos/")) {
+        references.add(reference);
+      }
     }
   }
   return [...references].sort();
