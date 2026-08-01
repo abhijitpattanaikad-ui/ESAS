@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const VARIANT_CLASSES = {
-  primary: "border-[var(--brand-primary)] bg-[var(--brand-primary)] text-white shadow-[var(--shadow-public-glow)] hover:border-[var(--brand-hover)] hover:bg-[var(--brand-hover)]",
+  primary: "border-[var(--brand-primary)] bg-[var(--brand-primary)] text-slate-950 shadow-[var(--shadow-public-glow)] hover:border-[var(--brand-hover)] hover:bg-[var(--brand-hover)] hover:text-slate-950 focus-visible:outline-white disabled:border-orange-300 disabled:bg-orange-300 disabled:text-slate-950",
   secondary: "border-[var(--border-subtle)] bg-[var(--surface-elevated)] text-white hover:border-orange-300/60 hover:bg-white/10",
   ghost: "border-transparent bg-transparent text-orange-100 hover:bg-orange-400/10 hover:text-white",
 } as const;

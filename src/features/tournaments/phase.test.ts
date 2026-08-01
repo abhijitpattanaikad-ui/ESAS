@@ -3,7 +3,7 @@ import test from "node:test";
 import type { ApiTournament } from "@/app/(types)/event";
 import { filterTournaments } from "./filter";
 import { deriveTournamentPhase, getCountdownParts } from "./phase";
-import { formatPrizePool, formatTeamFormat } from "./presentation";
+import { formatOnlineStatus, formatPrizePool, formatRegion, formatTeamFormat } from "./presentation";
 
 const schedule = {
   registrationStart: "2026-07-01T00:00:00.000Z",
@@ -82,5 +82,20 @@ test("team format prefers explicit format and recognizes only known mode fallbac
 test("prize pool formatting preserves truthful non-numeric labels", () => {
   assert.equal(formatPrizePool(5000), "5,000");
   assert.equal(formatPrizePool("5000"), "5,000");
-  assert.equal(formatPrizePool("TBD"), "TBD");
+  assert.equal(formatPrizePool(" AED 5,000 "), "AED 5,000");
+  assert.equal(formatPrizePool(0), "0");
+  assert.equal(formatPrizePool("  "), null);
+  assert.equal(formatPrizePool(Number.NaN), null);
+  assert.equal(formatPrizePool(Number.POSITIVE_INFINITY), null);
+  assert.equal(formatPrizePool("NaN"), null);
+  assert.equal(formatPrizePool("Infinity"), null);
+});
+
+test("missing tournament location metadata is never presented affirmatively", () => {
+  assert.equal(formatOnlineStatus(true), "Online");
+  assert.equal(formatOnlineStatus(false), "Offline");
+  assert.equal(formatOnlineStatus(undefined), "Not listed");
+  assert.equal(formatRegion(" Middle East "), "Middle East");
+  assert.equal(formatRegion("  "), "Not listed");
+  assert.equal(formatRegion(undefined), "Not listed");
 });

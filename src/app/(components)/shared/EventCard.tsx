@@ -79,10 +79,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   const context = [heading, text].filter(Boolean).join(" ");
   const dateWindow = formatDateWindow(schedule.tournamentStart, schedule.tournamentEnd);
   const teamFormat = formatTeamFormat(format, mode);
-  const displayedPrizePool = prizePool !== undefined
-    && (typeof prizePool === "number" || prizePool.trim() !== "")
-    ? formatPrizePool(prizePool)
-    : null;
+  const displayedPrizePool = formatPrizePool(prizePool);
 
   return (
     <GlassCard as="article" className={`group flex h-full min-w-0 flex-col overflow-hidden p-0 transition-colors ${STATUS_ACCENT_CLASSES[status]}`}>
@@ -103,7 +100,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       <div className="flex flex-1 flex-col p-5">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-orange-300">{game.name}</p>
-          <h2 className="mt-2 text-xl font-bold leading-tight text-white">{name}</h2>
+          <h3 className="mt-2 text-xl font-bold leading-tight text-white">{name}</h3>
           {context ? <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-300/80">{context}</p> : null}
         </div>
 

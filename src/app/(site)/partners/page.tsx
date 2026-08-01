@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { brandService } from "@/app/(services)/brandService";
-import { GlassCard } from "@/components/ui";
+import { buttonStyles, GlassCard } from "@/components/ui";
 
 export const metadata = {
   title: "Our Partners",
@@ -31,8 +32,9 @@ export default async function PartnersPage() {
             <div role="alert">
               <h2 className="text-xl font-bold text-white">Partner data is temporarily unavailable</h2>
               <p className="mt-2 text-sm text-orange-100/75">
-                We could not load reliable partner data. Please refresh the page to try again.
+                We could not load reliable partner data.
               </p>
+              <Link href="/partners" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Refresh partner page</Link>
             </div>
           </GlassCard>
         ) : activeBrands.length ? (
@@ -61,8 +63,9 @@ export default async function PartnersPage() {
           </ul>
         ) : (
           <GlassCard className="mx-auto max-w-2xl p-10 text-center">
-            <h2 className="text-xl font-bold text-white">Partners will be announced soon</h2>
-            <p className="mt-2 text-sm text-slate-300/80">There are no active partners to show right now.</p>
+            <h2 className="text-xl font-bold text-white">No active partners are listed</h2>
+            <p className="mt-2 text-sm text-slate-300/80">The partner catalogue currently has no active entries.</p>
+            <Link href="/" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Return home</Link>
           </GlassCard>
         )}
       </div>

@@ -12,8 +12,8 @@ export default function SiteShell({ children, isLoggedIn }: { children: React.Re
       {isLoggedIn ? <ModernSideNav /> : null}
       <main className={clsx("relative min-h-screen flex-1 pt-[64px] transition-all duration-300", isLoggedIn ? "lg:pl-[72px]" : "pl-0")}>
         {children}
-        <Footer />
       </main>
+      <Footer />
     </div>
   );
 }

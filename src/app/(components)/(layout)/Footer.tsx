@@ -1,10 +1,10 @@
 // src/app/(components)/(layout)/Footer.tsx
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { GlassCard } from "@/components/ui";
 
 // Importing icons from UI index
@@ -32,6 +32,13 @@ interface SocialLink {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const reduceMotion = useReducedMotion();
+  const [mediaMounted, setMediaMounted] = useState(false);
+  const motionEnabled = mediaMounted && reduceMotion === false;
+
+  useEffect(() => {
+    setMediaMounted(true);
+  }, []);
 
   const NAV_LINKS: Record<string, FooterLink[]> = {
     EXPLORE: [
@@ -123,8 +130,8 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 aria-label={`Visit GoEzPz on ${label}`}
                 className="rounded-full border border-[var(--border-subtle)] p-2.5 text-slate-100 transition-colors hover:border-orange-300/50 hover:bg-orange-300/10 hover:text-orange-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 0.2 }}
+                whileHover={motionEnabled ? { scale: 1.08 } : undefined}
+                transition={motionEnabled ? { duration: 0.2 } : undefined}
               >
                 {icon}
               </motion.a>

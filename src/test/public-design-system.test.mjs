@@ -19,6 +19,16 @@ test("public primitives use semantic orange glass tokens and visible focus", asy
   assert.match(files.join("\n"), /focus-visible/);
 });
 
+test("primary orange buttons use a WCAG-AA dark foreground in every state", async () => {
+  const button = await readFile("src/components/ui/button.tsx", "utf8");
+  const primary = button.match(/primary:\s*"([^"]+)"/)?.[1] ?? "";
+  assert.match(primary, /text-slate-950/);
+  assert.match(primary, /hover:text-slate-950/);
+  assert.match(primary, /focus-visible:outline-white/);
+  assert.match(primary, /disabled:text-slate-950/);
+  assert.doesNotMatch(primary, /text-white/);
+});
+
 test("tailwind-merge is an exact production dependency", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
   assert.match(pkg.dependencies["tailwind-merge"], /^\d+\.\d+\.\d+$/);
@@ -42,6 +52,24 @@ test("animated banner defers video until hydration and supports reduced motion a
   assert.match(banner, /onError/);
   assert.match(banner, /posterSrc/);
   assert.match(banner, /next\/link/);
+});
+
+test("public motion surfaces render visible on SSR and enable motion only after mount", async () => {
+  const files = await Promise.all([
+    "src/app/(components)/landing/FeaturedGames.tsx",
+    "src/app/(components)/landing/TrustedBy.tsx",
+    "src/app/(components)/landing/Advantages.tsx",
+    "src/app/(components)/(layout)/Footer.tsx",
+  ].map((path) => readFile(path, "utf8")));
+  for (const source of files) {
+    assert.match(source, /useReducedMotion/);
+    assert.match(source, /mediaMounted/);
+    assert.match(source, /reduceMotion === false/);
+  }
+  for (const source of files.slice(0, 3)) {
+    assert.match(source, /initial=\{false\}/);
+    assert.doesNotMatch(source, /initial=\{reduceMotion/);
+  }
 });
 
 test("public navigation exposes labelled mobile controls", async () => {

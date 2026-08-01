@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { ApiGameResponse } from "@/app/(services)/gameService";
-import { GlassCard, SectionHeading } from "@/components/ui";
+import { buttonStyles, GlassCard, SectionHeading } from "@/components/ui";
 import type { Availability } from "./Landing";
 
 type Game = {
@@ -28,6 +30,12 @@ const formatGames = (data: ApiGameResponse[]): Game[] => {
 export default function FeaturedGames({ initialGames = [], availability = "ready" }: FeaturedGamesProps) {
   const games = formatGames(initialGames);
   const reduceMotion = useReducedMotion();
+  const [mediaMounted, setMediaMounted] = useState(false);
+  const motionEnabled = mediaMounted && reduceMotion === false;
+
+  useEffect(() => {
+    setMediaMounted(true);
+  }, []);
 
   return (
     <section aria-labelledby="featured-games-title" className="py-20 sm:py-24">
@@ -41,19 +49,21 @@ export default function FeaturedGames({ initialGames = [], availability = "ready
         {availability === "error" ? (
           <GlassCard className="mt-10 text-center">
             <p role="status" className="text-sm text-orange-100/80">
-              Game catalogue is temporarily unavailable.
+              Game catalogue is unavailable.
             </p>
+            <Link href="/tournaments" className={buttonStyles({ variant: "ghost", className: "mt-4" })}>Explore tournaments</Link>
           </GlassCard>
         ) : games.length === 0 ? (
           <GlassCard className="mt-10 text-center">
-            <p className="text-sm text-slate-200/70">No featured games are available right now.</p>
+            <p className="text-sm text-slate-200/70">No games are currently listed in the catalogue.</p>
+            <Link href="/tournaments" className={buttonStyles({ variant: "ghost", className: "mt-4" })}>Explore tournaments</Link>
           </GlassCard>
         ) : (
           <motion.ul
             aria-label="Featured games"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={reduceMotion ? undefined : { duration: 0.45, ease: "easeOut" }}
+            initial={false}
+            whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
+            transition={motionEnabled ? { duration: 0.45, ease: "easeOut" } : undefined}
             viewport={{ once: true, amount: 0.15 }}
             className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:flex-wrap md:justify-center md:overflow-visible md:snap-none"
           >

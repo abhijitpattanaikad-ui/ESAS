@@ -1,6 +1,7 @@
+import Link from "next/link";
 import TournamentList from "@/app/(components)/shared/TournamentList";
 import { tournamentService } from "@/app/(services)/tournamentService";
-import { GlassCard } from "@/components/ui";
+import { buttonStyles, GlassCard } from "@/components/ui";
 
 export const metadata = {
   title: "Tournaments",
@@ -29,16 +30,18 @@ export default async function TournamentsPage() {
           <TournamentList initialTournaments={result.data} />
         ) : result.kind === "empty" ? (
           <GlassCard className="mx-auto max-w-2xl p-10 text-center">
-            <h2 className="text-xl font-bold text-white">No tournaments are scheduled</h2>
-            <p className="mt-2 text-sm text-slate-300/80">New competitions will appear here when registration opens.</p>
+            <h2 className="text-xl font-bold text-white">No tournaments are listed</h2>
+            <p className="mt-2 text-sm text-slate-300/80">The tournament catalogue is currently empty.</p>
+            <Link href="/" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Return home</Link>
           </GlassCard>
         ) : (
           <GlassCard as="div" className="mx-auto max-w-2xl border-orange-400/25 p-10 text-center">
             <div role="alert">
               <h2 className="text-xl font-bold text-white">Tournament service unavailable</h2>
               <p className="mt-2 text-sm text-orange-100/75">
-                We could not load reliable tournament data. Refresh this page rather than relying on cached or fabricated results.
+                We could not load reliable tournament data.
               </p>
+              <Link href="/tournaments" className={buttonStyles({ variant: "secondary", className: "mt-5" })}>Refresh tournaments</Link>
             </div>
           </GlassCard>
         )}

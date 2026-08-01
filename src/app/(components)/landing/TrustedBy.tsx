@@ -2,9 +2,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { ApiBrand } from "@/app/(services)/brandService";
-import { GlassCard, SectionHeading } from "@/components/ui";
+import { buttonStyles, GlassCard, SectionHeading } from "@/components/ui";
 import type { Availability } from "./Landing";
 
 type Partner = {
@@ -33,6 +35,12 @@ const formatPartners = (data: ApiBrand[]): Partner[] => {
 export default function TrustedBy({ initialBrands = [], availability = "ready" }: TrustedByProps) {
   const partners = formatPartners(initialBrands);
   const reduceMotion = useReducedMotion();
+  const [mediaMounted, setMediaMounted] = useState(false);
+  const motionEnabled = mediaMounted && reduceMotion === false;
+
+  useEffect(() => {
+    setMediaMounted(true);
+  }, []);
 
   return (
     <section aria-labelledby="trusted-partners-title" className="py-20 sm:py-24">
@@ -48,17 +56,19 @@ export default function TrustedBy({ initialBrands = [], availability = "ready" }
             <p role="status" className="text-sm text-orange-100/80">
               Partner data is temporarily unavailable.
             </p>
+            <Link href="/partners" className={buttonStyles({ variant: "ghost", className: "mt-4" })}>View partner page</Link>
           </GlassCard>
         ) : partners.length === 0 ? (
           <GlassCard className="mt-10 text-center">
-            <p className="text-sm text-slate-200/70">Partners will be announced soon.</p>
+            <p className="text-sm text-slate-200/70">No active partners are currently listed.</p>
+            <Link href="/partners" className={buttonStyles({ variant: "ghost", className: "mt-4" })}>View partner page</Link>
           </GlassCard>
         ) : (
           <motion.ul
             aria-label="Trusted partners"
-            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={reduceMotion ? undefined : { duration: 0.45, ease: "easeOut" }}
+            initial={false}
+            whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
+            transition={motionEnabled ? { duration: 0.45, ease: "easeOut" } : undefined}
             className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 md:flex-wrap md:justify-center md:overflow-visible md:snap-none"
             viewport={{ once: true, amount: 0.2 }}
           >

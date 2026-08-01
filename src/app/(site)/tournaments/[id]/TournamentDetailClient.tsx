@@ -11,7 +11,7 @@ import type { ApiTournament } from "@/app/(types)/event";
 import { Button, GlassCard, StatusBadge } from "@/components/ui";
 import { htmlToSafeText, safeExternalUrl } from "@/features/tournaments/content";
 import { deriveTournamentPhase, getCountdownParts, getCountdownTarget } from "@/features/tournaments/phase";
-import { formatPrizePool } from "@/features/tournaments/presentation";
+import { formatOnlineStatus, formatPrizePool, formatRegion } from "@/features/tournaments/presentation";
 import { clientJson } from "@/lib/http/client";
 
 const BracketView = dynamic(() => import("@/app/(components)/shared/BracketView").then((module) => module.BracketView), {
@@ -96,6 +96,7 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
   const rules = htmlToSafeText(tournament.rules);
   const rulesLink = safeExternalUrl(tournament.rulesLink);
   const banner = tournament.assets.desktopBanner || tournament.assets.mobileBanner || tournament.assets.thumbnail || "/images/byClient/bg-secondary.jpg";
+  const displayedPrizePool = formatPrizePool(tournament.prizePool);
 
   async function refreshTournament() {
     if (!tournament._id) return;
@@ -145,7 +146,7 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
   }
 
   return (
-    <main className="min-h-screen bg-[var(--surface-page)] pb-20 text-white">
+    <div className="min-h-screen bg-[var(--surface-page)] pb-20 text-white">
       <section className="relative h-80 w-full overflow-hidden sm:h-96" aria-labelledby="tournament-title">
         <Image src={banner} alt="" fill priority className="object-cover" sizes="100vw" />
         <div className="absolute inset-0 bg-linear-to-t from-[var(--surface-page)] via-[rgb(8_12_21_/_0.48)] to-black/60" />
@@ -197,7 +198,7 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
                   </div>
                   <div>
                     <dt className="flex items-center gap-2 text-slate-300/65"><Globe size={16} aria-hidden="true" />Location</dt>
-                    <dd className="mt-1 font-semibold text-white">{tournament.isOnline === false ? "Offline" : "Online"}</dd>
+                    <dd className="mt-1 font-semibold text-white">{formatOnlineStatus(tournament.isOnline)}</dd>
                   </div>
                   <div>
                     <dt className="flex items-center gap-2 text-slate-300/65"><Users size={16} aria-hidden="true" />Listed players</dt>
@@ -254,10 +255,10 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
               </dl>
             </GlassCard>
 
-            {tournament.prizePool && (
+            {displayedPrizePool !== null && (
               <GlassCard as="section" className="p-6 text-center">
                 <Trophy className="mx-auto mb-2 text-orange-300" aria-hidden="true" />
-                <div className="text-3xl font-black text-orange-300">{formatPrizePool(tournament.prizePool)}</div>
+                <div className="text-3xl font-black text-orange-300">{displayedPrizePool}</div>
                 <h2 className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-300/65">Prize pool</h2>
               </GlassCard>
             )}
@@ -265,7 +266,7 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
             <GlassCard as="section" className="p-5 sm:p-6">
               <h2 id="tournament-eligibility-heading" className="text-lg font-bold">Eligibility</h2>
               <div className="mt-3 space-y-2 text-sm leading-6 text-slate-200/75">
-                <p><strong className="text-white">Region:</strong> {tournament.regions || "Any"}</p>
+                <p><strong className="text-white">Region:</strong> {formatRegion(tournament.regions)}</p>
                 {tournament.allowedCountries?.length ? <p><strong className="text-white">Countries:</strong> {tournament.allowedCountries.join(", ")}</p> : null}
                 <p className="flex items-start gap-2">
                   <Users size={15} aria-hidden="true" className="mt-1 shrink-0" />
@@ -392,13 +393,11 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
                   tabIndex={0}
                   className="mt-5 overflow-x-auto rounded-xl border border-white/10 bg-black/20 px-2 pb-2"
                 >
-                  <div className="min-w-[48rem]">
-                    {tab === "BRACKET" && tournament._id ? (
-                      <BracketView tournamentId={tournament._id} format={tournament.format} />
-                    ) : tab === "BRACKET" ? (
-                      <p className="p-8 text-center text-slate-300/70">The bracket is not available yet.</p>
-                    ) : null}
-                  </div>
+                  {tab === "BRACKET" && tournament._id ? (
+                    <BracketView tournamentId={tournament._id} format={tournament.format} />
+                  ) : tab === "BRACKET" ? (
+                    <p className="p-8 text-center text-slate-300/70">The bracket is not available yet.</p>
+                  ) : null}
                 </div>
               </GlassCard>
             </div>
@@ -406,6 +405,6 @@ export default function TournamentDetailClient({ initialTournament, isAuthentica
 
         </div>
       </section>
-    </main>
+    </div>
   );
 }

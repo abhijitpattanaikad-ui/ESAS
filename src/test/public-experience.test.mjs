@@ -50,6 +50,8 @@ test("tournament cards use shared glass and textual status primitives", async ()
   assert.match(source, /GlassCard/);
   assert.match(source, /StatusBadge/);
   assert.match(source, /View tournament/);
+  assert.match(source, /<h3/);
+  assert.doesNotMatch(source, /<h2/);
 });
 
 test("tournament list projection requests card platform and format metadata", async () => {
@@ -68,6 +70,36 @@ test("tournament detail preserves mutation flow in an accessible glass layout", 
   assert.match(source, /overflow-x-auto/);
   assert.match(source, /GlassCard/);
   assert.match(source, /clientJson/);
+});
+
+test("public shell exposes one main landmark with the footer as its sibling", async () => {
+  const shell = await readFile("src/app/(site)/SiteShell.tsx", "utf8");
+  const detail = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
+  assert.ok(shell.indexOf("</main>") < shell.indexOf("<Footer"));
+  assert.match(detail, /return \(\s*<div className="min-h-screen/);
+  assert.doesNotMatch(detail, /return \(\s*<main/);
+});
+
+test("only successful bracket content receives the intrinsic canvas width", async () => {
+  const detail = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
+  const bracket = await readFile("src/app/(components)/shared/BracketView.tsx", "utf8");
+  assert.doesNotMatch(detail, /min-w-\[48rem\]/);
+  assert.match(bracket, /result\.kind === "empty"[\s\S]*?return <div className="min-w-\[48rem\] w-full"/);
+});
+
+test("public empty and error states are factual and link only to real actions", async () => {
+  const sources = await Promise.all([
+    "src/app/(components)/landing/FeaturedGames.tsx",
+    "src/app/(components)/landing/TrustedBy.tsx",
+    "src/app/(site)/partners/page.tsx",
+    "src/app/(site)/tournaments/page.tsx",
+  ].map((path) => readFile(path, "utf8")));
+  const joined = sources.join("\n");
+  assert.doesNotMatch(joined, /announced soon|will appear here|try again/i);
+  assert.match(sources[0], /href="\/tournaments"/);
+  assert.match(sources[1], /href="\/partners"/);
+  assert.match(sources[2], /href="\/partners"/);
+  assert.match(sources[3], /href="\/tournaments"/);
 });
 
 test("tournament detail permits the upstream Google avatar host through image and CSP policies", async () => {
