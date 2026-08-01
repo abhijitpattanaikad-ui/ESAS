@@ -72,10 +72,13 @@ test("tournament detail preserves mutation flow in an accessible glass layout", 
   assert.match(source, /clientJson/);
 });
 
-test("public shell exposes one main landmark with the footer as its sibling", async () => {
+test("public shell keeps one main and offsets its shared content wrapper with the footer", async () => {
   const shell = await readFile("src/app/(site)/SiteShell.tsx", "utf8");
   const detail = await readFile("src/app/(site)/tournaments/[id]/TournamentDetailClient.tsx", "utf8");
+  assert.equal((shell.match(/<main\b/g) ?? []).length, 1);
   assert.ok(shell.indexOf("</main>") < shell.indexOf("<Footer"));
+  assert.match(shell, /<div\s+className=\{clsx\([\s\S]*?isLoggedIn \? "lg:pl-\[72px\]" : "pl-0"[\s\S]*?<main[\s\S]*?<Footer \/>[\s\S]*?<\/div>/);
+  assert.doesNotMatch(shell.match(/<main[\s\S]*?<\/main>/)?.[0] ?? "", /lg:pl-\[72px\]/);
   assert.match(detail, /return \(\s*<div className="min-h-screen/);
   assert.doesNotMatch(detail, /return \(\s*<main/);
 });
