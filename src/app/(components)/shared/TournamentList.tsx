@@ -1,81 +1,131 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Filter, Search } from "lucide-react";
 import { EventCard } from "@/app/(components)/shared/EventCard";
-import { ApiTournament } from "@/app/(types)/event";
-import { Search, Filter } from "lucide-react";
+import type { ApiTournament, ApiTournamentStatus } from "@/app/(types)/event";
+import { Button, GlassCard, SectionHeading } from "@/components/ui";
+import { filterTournaments } from "@/features/tournaments/filter";
 
 interface TournamentListProps {
   initialTournaments: ApiTournament[];
 }
 
-export default function TournamentList({
-  initialTournaments,
-}: TournamentListProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+const CONTROL_CLASSES = "min-h-11 w-full rounded-[var(--radius-public-control)] border border-[var(--border-subtle)] bg-[var(--surface-elevated)] text-sm text-white outline-none transition-colors focus-visible:border-orange-300 focus-visible:ring-2 focus-visible:ring-orange-300/40";
+
+export default function TournamentList({ initialTournaments }: TournamentListProps) {
+  const [query, setQuery] = useState("");
   const [selectedGame, setSelectedGame] = useState("All");
+  const [selectedStatus, setSelectedStatus] = useState<ApiTournamentStatus | "All">("All");
 
-  const uniqueGames = useMemo(() => {
-    const games = new Set(initialTournaments.map(t => t.game?.name).filter(Boolean));
-    return ["All", ...Array.from(games)];
-  }, [initialTournaments]);
+  const gameOptions = useMemo(
+    () => Array.from(new Set(initialTournaments.map(({ game }) => game.name))).sort((a, b) => a.localeCompare(b, "en")),
+    [initialTournaments],
+  );
+  const statusOptions = useMemo(
+    () => Array.from(new Set(initialTournaments.map(({ status }) => status))).sort((a, b) => a.localeCompare(b, "en")),
+    [initialTournaments],
+  );
+  const filteredTournaments = useMemo(
+    () => filterTournaments(initialTournaments, { query, game: selectedGame, status: selectedStatus }),
+    [initialTournaments, query, selectedGame, selectedStatus],
+  );
+  const hasActiveFilters = query !== "" || selectedGame !== "All" || selectedStatus !== "All";
 
-  const filteredTournaments = useMemo(() => {
-    return initialTournaments.filter((t) => {
-      const matchesSearch = t.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            t.game?.name?.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesGame = selectedGame === "All" || t.game?.name === selectedGame;
-      return matchesSearch && matchesGame;
-    });
-  }, [initialTournaments, searchQuery, selectedGame]);
+  function resetFilters() {
+    setQuery("");
+    setSelectedGame("All");
+    setSelectedStatus("All");
+  }
 
   return (
-    <div className="w-full space-y-8">
-      {/* Search and Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-center sm:justify-between px-8 sm:max-xl:px-0 2xl:max-[1744px]:px-10 min-[1745px]:px-24 mb-10">
-        <div className="relative w-full md:w-96">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input 
-            type="text" 
-            placeholder="Search tournaments..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-[#0c0a11]/80 backdrop-blur-md border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-jaffa-500 focus:ring-1 focus:ring-jaffa-500 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
-          />
-        </div>
-        <div className="relative w-full md:w-64">
-          <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
-          <select
-            value={selectedGame}
-            onChange={(e) => setSelectedGame(e.target.value)}
-            className="w-full pl-11 pr-10 py-3 bg-[#0c0a11]/80 backdrop-blur-md border border-white/10 rounded-xl text-white appearance-none focus:outline-none focus:border-jaffa-500 focus:ring-1 focus:ring-jaffa-500 transition-all cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)] relative z-0"
-          >
-            {uniqueGames.map(game => (
-              <option key={game as string} value={game as string} className="bg-[#0c0a11] text-white py-2">
-                {game === "All" ? "All Games" : game as string}
-              </option>
-            ))}
-          </select>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none z-10">
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-8">
+      <SectionHeading
+        eyebrow="Tournament discovery"
+        title="Available tournaments"
+        description="Narrow the current tournament catalog by name, game, or status."
+      />
 
-      {/* Results Grid */}
-      <div className="flex flex-row overflow-x-auto pb-8 gap-6 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 lg:grid-cols-4 px-8 sm:max-xl:px-0 2xl:max-[1744px]:px-10 min-[1745px]:px-24 gap-y-8 justify-items-center sm:pb-0 sm:overflow-visible sm:snap-none">
-        {filteredTournaments.length > 0 ? (
-          filteredTournaments.map((tournament, index) => (
-            <div key={tournament._id || index} className="min-w-[280px] sm:min-w-0 snap-center">
-              <EventCard {...tournament} index={index} />
+      <GlassCard className="p-4 sm:p-5">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[minmax(18rem,1fr)_minmax(12rem,0.55fr)_minmax(12rem,0.55fr)_auto] xl:items-end">
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-100" htmlFor="tournament-search">
+              Search tournaments
+            </label>
+            <div className="relative">
+              <Search aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                id="tournament-search"
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Tournament or game"
+                className={`${CONTROL_CLASSES} pl-10 pr-4`}
+              />
             </div>
-          ))
-        ) : (
-          <div className="col-span-full py-20 text-center w-full">
-            <p className="text-xl font-bold text-white/40 italic">No tournaments found matching your criteria.</p>
           </div>
-        )}
-      </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-100" htmlFor="tournament-game">
+              Game
+            </label>
+            <div className="relative">
+              <Filter aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <select
+                id="tournament-game"
+                value={selectedGame}
+                onChange={(event) => setSelectedGame(event.target.value)}
+                className={`${CONTROL_CLASSES} appearance-none pl-10 pr-9`}
+              >
+                <option value="All">All games</option>
+                {gameOptions.map((game) => <option key={game} value={game}>{game}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-slate-100" htmlFor="tournament-status">
+              Status
+            </label>
+            <select
+              id="tournament-status"
+              value={selectedStatus}
+              onChange={(event) => setSelectedStatus(event.target.value as ApiTournamentStatus | "All")}
+              className={`${CONTROL_CLASSES} appearance-none px-4`}
+            >
+              <option value="All">All statuses</option>
+              {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
+            </select>
+          </div>
+
+          <Button variant="secondary" onClick={resetFilters} disabled={!hasActiveFilters} className="w-full xl:w-auto">
+            Reset filters
+          </Button>
+        </div>
+      </GlassCard>
+
+      <p aria-live="polite" aria-atomic="true" className="text-sm font-medium text-slate-300">
+        {filteredTournaments.length === 1
+          ? "1 tournament found"
+          : `${filteredTournaments.length} tournaments found`}
+      </p>
+
+      {filteredTournaments.length > 0 ? (
+        <ul aria-label="Tournament results" className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {filteredTournaments.map((tournament, index) => (
+            <li key={tournament._id ?? `${tournament.name}-${index}`} className="min-w-0">
+              <EventCard {...tournament} index={index} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <GlassCard className="py-14 text-center">
+          <h2 className="text-xl font-bold text-white">No tournaments match these filters</h2>
+          <p className="mx-auto mt-2 max-w-xl text-sm text-slate-300/80">
+            Try a different tournament name, game, or status, or reset all filters to see every available result.
+          </p>
+        </GlassCard>
+      )}
     </div>
   );
 }

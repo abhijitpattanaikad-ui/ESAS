@@ -35,3 +35,19 @@ test("game and partner collections center incomplete desktop rows", async () => 
     assert.match(source, /md:justify-center/);
   }
 });
+
+test("tournament discovery exposes labelled search, game, status, and reset controls", async () => {
+  const source = await readFile("src/app/(components)/shared/TournamentList.tsx", "utf8");
+  assert.match(source, /<label[^>]*htmlFor="tournament-search"/);
+  assert.match(source, /id="tournament-game"/);
+  assert.match(source, /id="tournament-status"/);
+  assert.match(source, /Reset filters/);
+  assert.match(source, /aria-live="polite"/);
+});
+
+test("tournament cards use shared glass and textual status primitives", async () => {
+  const source = await readFile("src/app/(components)/shared/EventCard.tsx", "utf8");
+  assert.match(source, /GlassCard/);
+  assert.match(source, /StatusBadge/);
+  assert.match(source, /View tournament/);
+});

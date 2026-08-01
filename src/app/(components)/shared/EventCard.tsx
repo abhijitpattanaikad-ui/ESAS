@@ -2,48 +2,24 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import {
-  ExGlowButton,
-  ExIconGlobe,
-  ExIconPrizePool,
-  ExIconTournamentType,
-  ExIconTrophy,
-} from "@/app/(components)/ui";
+import type * as React from "react";
+import { CalendarDays, Gamepad2, Monitor, Trophy, UsersRound } from "lucide-react";
 import type { ApiTournament, ApiTournamentStatus } from "@/app/(types)/event";
+import { Button, GlassCard, StatusBadge } from "@/components/ui";
 
-const STATUS_CONFIG: Record<ApiTournamentStatus, { label: string; className: string }> = {
-  Upcoming: {
-    label: "Upcoming",
-    className: "bg-blue-600 text-white border-blue-400 shadow-[0_0_14px_rgba(59,130,246,0.7)]",
-  },
-  "Registration Open": {
-    label: "Registration open",
-    className: "bg-emerald-600 text-white border-emerald-400 shadow-[0_0_14px_rgba(16,185,129,0.7)]",
-  },
-  "Starting Soon": {
-    label: "Starting soon",
-    className: "bg-orange-500 text-white border-orange-300 shadow-[0_0_14px_rgba(249,115,22,0.8)]",
-  },
-  Ongoing: {
-    label: "Ongoing",
-    className: "bg-purple-600 text-white border-purple-400 shadow-[0_0_18px_rgba(147,51,234,0.9)]",
-  },
-  Completed: {
-    label: "Completed",
-    className: "bg-gray-700 text-gray-300 border-gray-500",
-  },
-  "Status unavailable": {
-    label: "Status unavailable",
-    className: "bg-gray-900 text-gray-200 border-gray-600",
-  },
+const STATUS_ACCENT_CLASSES: Record<ApiTournamentStatus, string> = {
+  Upcoming: "hover:border-sky-300/50",
+  Ongoing: "hover:border-violet-300/50",
+  Completed: "hover:border-slate-300/40",
+  "Registration Open": "hover:border-emerald-300/50",
+  "Starting Soon": "hover:border-orange-300/60",
+  "Status unavailable": "hover:border-slate-400/40",
 };
 
-function formatDate(iso?: string): string {
-  if (!iso) return "Date TBA";
+function formatDate(iso?: string): string | null {
+  if (!iso) return null;
   const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "Date TBA";
+  if (Number.isNaN(date.getTime())) return null;
   return new Intl.DateTimeFormat("en-AE", {
     timeZone: "Asia/Dubai",
     month: "short",
@@ -52,9 +28,42 @@ function formatDate(iso?: string): string {
   }).format(date);
 }
 
+function formatDateWindow(start?: string, end?: string): string | null {
+  const formattedStart = formatDate(start);
+  const formattedEnd = formatDate(end);
+  if (formattedStart && formattedEnd) return `${formattedStart} – ${formattedEnd}`;
+  if (formattedStart) return `Starts ${formattedStart}`;
+  if (formattedEnd) return `Ends ${formattedEnd}`;
+  return null;
+}
+
 function formatPrizePool(value: string | number): string {
   const amount = typeof value === "number" ? value : Number(value);
   return Number.isFinite(amount) ? amount.toLocaleString("en-AE") : String(value);
+}
+
+function formatTeamFormat(format?: string, mode?: string): string | null {
+  if (format) return format;
+  if (mode === "duelSolo") return "1v1";
+  return mode ?? null;
+}
+
+interface MetadataItemProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}
+
+function MetadataItem({ icon, label, value }: MetadataItemProps) {
+  return (
+    <div className="flex min-w-0 items-start gap-2.5">
+      <span aria-hidden="true" className="mt-0.5 shrink-0 text-orange-300">{icon}</span>
+      <div className="min-w-0">
+        <dt className="text-[0.68rem] font-bold uppercase tracking-[0.13em] text-slate-400">{label}</dt>
+        <dd className="mt-0.5 truncate text-sm font-medium text-slate-100" title={value}>{value}</dd>
+      </div>
+    </div>
+  );
 }
 
 export interface EventCardProps extends ApiTournament {
@@ -72,96 +81,58 @@ export const EventCard: React.FC<EventCardProps> = ({
   text,
   prizePool,
   mode,
+  format,
+  platform,
 }) => {
   const router = useRouter();
-  const reduceMotion = useReducedMotion();
   const bannerSrc = assets.thumbnail || game.assets?.thumbnail || assets.desktopBanner || "";
-  const statusConfig = STATUS_CONFIG[status];
   const context = [heading, text].filter(Boolean).join(" ");
+  const dateWindow = formatDateWindow(schedule.tournamentStart, schedule.tournamentEnd);
+  const teamFormat = formatTeamFormat(format, mode);
+  const displayedPrizePool = prizePool !== undefined
+    && (typeof prizePool === "number" || prizePool.trim() !== "")
+    ? formatPrizePool(prizePool)
+    : null;
 
   return (
-    <motion.article
-      whileHover={reduceMotion ? undefined : { scale: 1.02 }}
-      whileTap={reduceMotion ? undefined : { scale: 0.99 }}
-      className="group relative w-full max-w-[300px] overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-[#1a0f0a] via-[#5c2a12] to-[#2d140a] shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition hover:border-jaffa-500/50 hover:shadow-[0_0_25px_rgba(249,115,22,0.25)] sm:w-[260px] sm:max-w-none 2xl:w-[300px]"
-    >
-      <div className="relative h-40 w-full overflow-hidden">
+    <GlassCard as="article" className={`group flex h-full min-w-0 flex-col overflow-hidden p-0 transition-colors ${STATUS_ACCENT_CLASSES[status]}`}>
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-linear-to-br from-orange-950 to-slate-950">
         {bannerSrc ? (
           <Image
             src={bannerSrc}
             alt={`${name} tournament banner`}
             fill
             className="object-cover object-center transition-transform duration-500 motion-reduce:transition-none group-hover:scale-105 motion-reduce:group-hover:scale-100"
-            sizes="(max-width: 640px) 280px, (max-width: 1536px) 260px, 300px"
+            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
           />
-        ) : (
-          <div className="h-full w-full bg-linear-to-br from-orange-900/60 to-red-950" />
-        )}
-        <div className="absolute inset-0 bg-linear-to-t from-[#2e0707]/90 via-[#2e0707]/10 to-transparent" />
-        <span className={`absolute left-2 top-2 inline-flex min-h-6 items-center justify-center rounded-full border px-3 text-[10px] font-bold leading-none backdrop-blur-md ${statusConfig.className}`}>
-          {statusConfig.label}
-        </span>
+        ) : null}
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/10 to-transparent" />
+        <StatusBadge status={status} className="absolute left-4 top-4 backdrop-blur-md" />
       </div>
 
-      <div className="flex flex-col bg-linear-to-b from-white/5 to-transparent text-white">
-        <div className="flex w-full flex-col items-start gap-1 overflow-hidden p-3">
-          <p className="w-full truncate text-xs uppercase tracking-wide text-[#BDBDBD]" title={game.name}>
-            {game.name}
-          </p>
-          <h2 className="w-full truncate text-start text-base font-bold leading-tight" title={name}>
-            {name}
-          </h2>
-
-          {context ? (
-            <div className="flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 text-xs text-white/80">
-              <ExIconGlobe className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">{context}</span>
-            </div>
-          ) : null}
-
-          {prizePool !== undefined && prizePool !== "" ? (
-            <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-[#BDBDBD]">
-              <ExIconPrizePool className="h-3.5 w-3.5 text-jaffa-500" />
-              <span>Prize pool: <strong className="text-white">{formatPrizePool(prizePool)}</strong></span>
-            </div>
-          ) : null}
-
-          {mode ? (
-            <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-[#BDBDBD]">
-              <ExIconTournamentType className="h-3.5 w-3.5 text-jaffa-500" />
-              <span>Mode: <strong className="text-white">{mode === "duelSolo" ? "1v1" : mode}</strong></span>
-            </div>
-          ) : null}
-
-          <div className="mt-2 flex w-full items-end justify-between">
-            {game.assets?.thumbnail ? (
-              <div className="relative h-8 w-8 overflow-hidden rounded-md border border-white/10">
-                <Image
-                  src={game.assets.thumbnail}
-                  alt=""
-                  fill
-                  sizes="32px"
-                  className="object-cover"
-                />
-              </div>
-            ) : <span />}
-
-            <div className="origin-right scale-75">
-              <ExGlowButton disabled={!_id} onClick={() => _id && router.push(`/tournaments/${encodeURIComponent(_id)}`)}>
-                {_id ? "Explore" : "Unavailable"}
-              </ExGlowButton>
-            </div>
-          </div>
+      <div className="flex flex-1 flex-col p-5">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-orange-300">{game.name}</p>
+          <h2 className="mt-2 text-xl font-bold leading-tight text-white">{name}</h2>
+          {context ? <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-300/80">{context}</p> : null}
         </div>
 
-        <div className="flex items-center justify-between bg-linear-to-r from-[#2d140a] to-[#421d0a] px-4 py-2.5 text-[11px] font-medium text-white">
-          <span>
-            <ExIconTrophy className="mr-1 inline h-3.5 w-3.5 text-orange-300" />
-            {formatDate(schedule.tournamentStart)}
-          </span>
-          <span className="text-[#BDBDBD]">Ends {formatDate(schedule.tournamentEnd)}</span>
-        </div>
+        <dl className="mt-5 grid gap-4 border-y border-white/10 py-4 sm:grid-cols-2">
+          <MetadataItem icon={<Gamepad2 className="h-4 w-4" />} label="Game" value={game.name} />
+          {dateWindow ? <MetadataItem icon={<CalendarDays className="h-4 w-4" />} label="Dates" value={dateWindow} /> : null}
+          {platform ? <MetadataItem icon={<Monitor className="h-4 w-4" />} label="Platform" value={platform} /> : null}
+          {teamFormat ? <MetadataItem icon={<UsersRound className="h-4 w-4" />} label="Team format" value={teamFormat} /> : null}
+          {displayedPrizePool ? <MetadataItem icon={<Trophy className="h-4 w-4" />} label="Prize pool" value={displayedPrizePool} /> : null}
+        </dl>
+
+        <Button
+          className="mt-5 w-full"
+          disabled={!_id}
+          onClick={() => _id && router.push(`/tournaments/${encodeURIComponent(_id)}`)}
+        >
+          View tournament
+        </Button>
       </div>
-    </motion.article>
+    </GlassCard>
   );
 };
