@@ -1,6 +1,6 @@
 # ESAS — eSports Web Platform
 
-ESAS is the Next.js web application for XeSports tournament discovery, registration, brackets, account management, partner discovery, and public marketing pages.
+ESAS is the Next.js web application for eSports tournament discovery, registration, brackets, account management, partner discovery, and public marketing pages.
 
 This repository was rebuilt from the supplied XeSports source with a production-safety focus. The application now treats the upstream API as authoritative: it never substitutes mock tournament or bracket results when a request fails.
 
