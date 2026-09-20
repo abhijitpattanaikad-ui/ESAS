@@ -1,4 +1,4 @@
-# ESAS — XeSports Web Platform
+# ESAS — eSports Web Platform
 
 ESAS is the Next.js web application for XeSports tournament discovery, registration, brackets, account management, partner discovery, and public marketing pages.
 
